@@ -3,7 +3,7 @@ name: Deploy Website via FTP
 on:
   push:
     branches:
-      - main # Agar aapki default branch 'master' hai, to isay 'master' kar dein
+      - main
 
 jobs:
   ftp-deploy:
@@ -19,4 +19,4 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./public_html/ # Agar aap kisi specific folder mein upload karna chahte hain to yahan path dein (e.g. ./public_html/games/)
+        server-dir: ./public_html/
