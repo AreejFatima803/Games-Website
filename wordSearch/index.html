@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Word Search Classic</title>
+  
+  <!-- Modern Clean Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       START / SPLASH SCREEN (MATCHES REFERENCE SCREENSHOT 1:1)
+       ========================================================================== -->
+  <div class="splash-screen active" id="splashScreen">
+    <div class="splash-content">
+      
+      <!-- Central White Logo Card -->
+      <div class="splash-card">
+        <!-- Faded Background Letter Matrix with Highlight Bars -->
+        <div class="splash-grid-bg">
+          <div class="splash-row"><span>G</span><span>P</span><span>Q</span><span>K</span><span>L</span><span>A</span><span>L</span><span>S</span><span>I</span><span>Q</span></div>
+          <div class="splash-row"><span>Q</span><span>J</span><span>Y</span><span>D</span><span>E</span><span>A</span><span>U</span><span>O</span><span>M</span><span>G</span></div>
+          <div class="splash-row"><span>H</span><span>E</span><span>R</span><span>K</span><span>P</span><span>W</span><span>O</span><span>R</span><span>L</span><span>F</span></div>
+          <div class="splash-row"><span>G</span><span>T</span><span>P</span><span>O</span><span>C</span><span>L</span><span>A</span><span>S</span><span>S</span><span>I</span></div>
+          <div class="splash-row"><span>Q</span><span>J</span><span>Y</span><span>D</span><span>E</span><span>A</span><span>U</span><span>O</span><span>L</span><span>F</span></div>
+          <div class="splash-row"><span>T</span><span>E</span><span>R</span><span>U</span><span>O</span><span>D</span><span>U</span><span>W</span><span>T</span><span>I</span></div>
+          
+          <!-- Highlighted Row: WORDSEARCH (Orange Pill) -->
+          <div class="splash-row row-highlight-orange">
+            <span>W</span><span>O</span><span>R</span><span>D</span><span>S</span><span>E</span><span>A</span><span>R</span><span>C</span><span>H</span>
+          </div>
+          
+          <div class="splash-row">
+            <span>G</span><span class="hl-purple">O</span><span>I</span><span>U</span><span>I</span><span>Z</span><span>L</span><span>C</span><span>G</span><span>I</span>
+          </div>
+          
+          <div class="splash-row">
+            <span>H</span><span>E</span><span class="hl-purple">R</span><span>K</span><span>P</span><span class="hl-green">W</span><span class="hl-green">O</span><span class="hl-green">R</span><span class="hl-green">L</span><span class="hl-green">D</span>
+          </div>
+          
+          <div class="splash-row">
+            <span>Q</span><span>J</span><span>Y</span><span class="hl-purple">D</span><span>E</span><span>A</span><span>U</span><span>O</span><span>M</span><span>G</span>
+          </div>
+          
+          <div class="splash-row">
+            <span>T</span><span>P</span><span>O</span><span class="hl-blue">C</span><span class="hl-blue">L</span><span class="hl-blue">A</span><span class="hl-blue">S</span><span class="hl-blue">S</span><span class="hl-blue">I</span><span class="hl-blue">C</span>
+          </div>
+          
+          <div class="splash-row">
+            <span>H</span><span>E</span><span>L</span><span>L</span><span>O</span><span>D</span><span>Y</span><span>W</span><span>T</span><span>F</span>
+          </div>
+        </div>
+
+        <!-- 3D Title Badges (WORD SEARCH CLASSIC) -->
+        <div class="splash-title-badge">
+          <div class="title-pill-word">
+            <span>W</span><span>O</span><span>R</span><span>D</span>
+          </div>
+          <div class="title-pill-search">
+            <span>S</span><span>E</span><span>A</span><span>R</span><span>C</span><span>H</span>
+          </div>
+          <div class="title-pill-classic">
+            <span>CLASSIC</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Juicy 3D Green Play Button -->
+      <button class="splash-play-btn" id="splashPlayBtn" title="Play Game" aria-label="Play Game">
+        <svg class="play-svg-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MAIN IN-GAME SCREEN (EXACT 1:1 SCREENSHOT MATCH)
+       ========================================================================== -->
+  <div class="game-container">
+    
+    <!-- LEFT SIDE: Header + Word List + Bottom Controls -->
+    <div class="left-panel">
+      
+      <!-- Top Left: Gear Icon + Sound Toggle + Category Title & Count -->
+      <div class="top-header">
+        <button id="settingsBtn" class="gear-btn" title="Categories & Settings" aria-label="Settings">
+          <svg class="gear-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+        </button>
+        <button id="soundToggleBtn" class="gear-btn sound-header-btn" title="Toggle Music / Sound" aria-label="Toggle Sound">
+          <span id="soundHeaderIcon">🔊</span>
+        </button>
+        <span class="category-title" id="categoryTitle">Fashion 1/12</span>
+      </div>
+
+      <!-- Center Word List (Vertically centered) -->
+      <div class="words-list" id="wordsList">
+        <!-- Dynamically rendered word items -->
+      </div>
+
+      <!-- Bottom Controls: Hint + Timer -->
+      <div class="bottom-controls">
+        <button id="hintBtn" class="ctrl-group hint-btn" title="Use Hint">
+          <div class="hint-box">?</div>
+          <span class="hint-count" id="hintBadge">x0</span>
+        </button>
+
+        <div class="ctrl-group timer-group" id="timerGroup">
+          <svg class="stopwatch-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+          </svg>
+          <span class="timer-text" id="gameTimer">4:37:50</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE: Letter Grid (Clean 11x11 letters on full off-white panel) -->
+    <div class="right-panel">
+      <div class="grid-wrapper" id="gridWrapper">
+        <!-- SVG Permanent Found Highlights Layer -->
+        <svg class="svg-layer" id="highlightsSvg"></svg>
+        <!-- SVG Live Drag Line Layer -->
+        <svg class="svg-layer" id="activeSelectionSvg"></svg>
+        <!-- Letter Cells Grid -->
+        <div class="letter-matrix" id="lettersGrid"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Found Word Toast -->
+  <div class="word-toast" id="wordToast">
+    <span id="toastWord">TREND</span>
+  </div>
+
+  <!-- Victory Modal -->
+  <div class="modal-overlay" id="victoryModal">
+    <div class="modal-card">
+      <div class="stars-icon">⭐⭐⭐</div>
+      <h2 class="modal-heading">LEVEL COMPLETED!</h2>
+      <p class="modal-sub">You found all the words!</p>
+      
+      <div class="stats-grid">
+        <div class="stat-pill">
+          <span class="stat-lbl">Time</span>
+          <span class="stat-val" id="vicTime">04:37</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-lbl">Words</span>
+          <span class="stat-val" id="vicWords">12/12</span>
+        </div>
+      </div>
+
+      <button class="next-btn" id="nextLevelBtn">CONTINUE ➜</button>
+    </div>
+  </div>
+
+  <!-- Settings / Category Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header-row">
+        <h2 class="modal-heading">Settings & Categories</h2>
+        <button class="close-x" id="closeSettingsModal">&times;</button>
+      </div>
+
+      <div class="category-list" id="categoryList"></div>
+
+      <div class="setting-toggle-row">
+        <span>Sound Effects</span>
+        <label class="switch">
+          <input type="checkbox" id="soundToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="modal-btns-col" style="display:flex; flex-direction:column; gap:0.5rem; margin-top:1rem;">
+        <button class="next-btn" id="homeMenuBtn" style="background:#3b82f6; border-color:#2563eb;">🏠 Main Menu</button>
+        <button class="next-btn" id="saveSettingsBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

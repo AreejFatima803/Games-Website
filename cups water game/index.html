@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Sort Puzzle - Color Liquid Game</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons for clean UI controls -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Animated Background Bubbles Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="game-wrapper">
+    <!-- Header Section -->
+    <header class="game-header">
+      <div class="header-top">
+        <button id="btn-home" class="icon-btn" title="Main Menu" aria-label="Main Menu">
+          <i class="fa-solid fa-house"></i>
+        </button>
+        <button id="btn-sound" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <div class="level-badge">
+          <h1 id="level-title">Level 1</h1>
+        </div>
+        <button id="btn-levels" class="icon-btn" title="Select Level" aria-label="Select Level">
+          <i class="fa-solid fa-list-ol"></i>
+        </button>
+      </div>
+
+      <!-- Star Rating Bar -->
+      <div class="stars-container" id="stars-bar">
+        <div class="star active" data-index="1"><i class="fa-solid fa-star"></i></div>
+        <div class="star active" data-index="2"><i class="fa-solid fa-star"></i></div>
+        <div class="star active" data-index="3"><i class="fa-solid fa-star"></i></div>
+      </div>
+
+      <!-- Moves & Info bar -->
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-label">Moves:</span>
+          <span class="stat-value" id="moves-count">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Bottles:</span>
+          <span class="stat-value" id="bottles-count">2</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Game Play Area -->
+    <main class="game-area">
+      <!-- Dynamic Pouring Liquid Stream Layer -->
+      <svg id="stream-layer" class="stream-layer"></svg>
+
+      <!-- Glass Bottles Container Grid -->
+      <div class="bottles-grid" id="bottles-container">
+        <!-- Bottles will be dynamically injected here -->
+      </div>
+    </main>
+
+    <!-- Action Toolbar (Undo, Restart) -->
+    <footer class="game-footer">
+      <button id="btn-undo" class="action-btn" title="Undo Move">
+        <div class="btn-icon-wrap"><i class="fa-solid fa-rotate-left"></i></div>
+        <span>Undo</span>
+        <span class="badge" id="undo-count">0</span>
+      </button>
+
+      <button id="btn-restart" class="action-btn" title="Restart Level">
+        <div class="btn-icon-wrap"><i class="fa-solid fa-arrow-rotate-right"></i></div>
+        <span>Restart</span>
+      </button>
+    </footer>
+  </div>
+
+  <!-- Level Completed Modal -->
+  <div class="modal-backdrop" id="win-modal">
+    <div class="modal-card win-card">
+      <div class="win-banner">
+        <div class="confetti-icon">🎉</div>
+        <h2>Level Completed!</h2>
+      </div>
+
+      <div class="win-stars" id="win-stars">
+        <div class="win-star star-1"><i class="fa-solid fa-star"></i></div>
+        <div class="win-star star-2"><i class="fa-solid fa-star"></i></div>
+        <div class="win-star star-3"><i class="fa-solid fa-star"></i></div>
+      </div>
+
+      <div class="win-stats">
+        <div class="win-stat-box">
+          <span class="ws-label">Level</span>
+          <span class="ws-value" id="win-level-num">1</span>
+        </div>
+        <div class="win-stat-box">
+          <span class="ws-label">Moves</span>
+          <span class="ws-value" id="win-moves-num">4</span>
+        </div>
+      </div>
+
+      <div class="win-actions">
+        <button id="btn-win-replay" class="modal-btn secondary-btn">
+          <i class="fa-solid fa-rotate-right"></i> Replay
+        </button>
+        <button id="btn-win-next" class="modal-btn primary-btn pulse-anim">
+          Next Level <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level Selector Modal -->
+  <div class="modal-backdrop" id="levels-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Select Level</h3>
+        <button id="btn-close-levels" class="close-btn">&times;</button>
+      </div>
+      <div class="levels-grid" id="levels-grid">
+        <!-- Level cards rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas for Victory -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Start / Splash Screen Overlay -->
+  <div class="start-screen-overlay active" id="start-screen">
+    <div class="start-card">
+      <div class="start-cover-wrapper">
+        <img src="cover.jpg" alt="Water Sort Puzzle Cover" class="start-cover-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="start-cover-fallback">
+          <svg class="cover-svg-art" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4a3f85"/>
+                <stop offset="50%" stop-color="#2d2258"/>
+                <stop offset="100%" stop-color="#191338"/>
+              </linearGradient>
+              <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#00f2fe"/>
+                <stop offset="100%" stop-color="#4facfe"/>
+              </linearGradient>
+              <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ff758c"/>
+                <stop offset="100%" stop-color="#ff7eb3"/>
+              </linearGradient>
+              <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffe259"/>
+                <stop offset="100%" stop-color="#ffa751"/>
+              </linearGradient>
+              <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#b185ff"/>
+                <stop offset="100%" stop-color="#7e57c2"/>
+              </linearGradient>
+              <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#43e97b"/>
+                <stop offset="100%" stop-color="#38f9d7"/>
+              </linearGradient>
+              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+
+            <!-- Background -->
+            <rect width="500" height="280" rx="20" fill="url(#bgGrad)"/>
+            
+            <!-- Background Glow Circles -->
+            <circle cx="250" cy="140" r="110" fill="#6c5ce7" opacity="0.25" filter="url(#glow)"/>
+            <circle cx="120" cy="90" r="60" fill="#00d2d3" opacity="0.2" filter="url(#glow)"/>
+            <circle cx="380" cy="180" r="70" fill="#ff758c" opacity="0.2" filter="url(#glow)"/>
+
+            <!-- Sparkling Stars -->
+            <g fill="#ffeaa7" opacity="0.9">
+              <path d="M 90,40 L 93,52 L 105,55 L 93,58 L 90,70 L 87,58 L 75,55 L 87,52 Z" transform="scale(0.8) translate(20,10)"/>
+              <path d="M 400,60 L 403,70 L 413,73 L 403,76 L 400,86 L 397,76 L 387,73 L 397,70 Z" transform="scale(0.9) translate(10,-10)"/>
+              <path d="M 260,25 L 262,32 L 269,34 L 262,36 L 260,43 L 258,36 L 251,34 L 258,32 Z"/>
+            </g>
+
+            <!-- Left Bottle (Upright) -->
+            <g transform="translate(60, 60)">
+              <!-- Glass Outline -->
+              <rect x="0" y="0" width="55" height="150" rx="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.7)" stroke-width="3"/>
+              <!-- Liquid layers -->
+              <rect x="3" y="115" width="49" height="32" rx="12" fill="url(#cyanGrad)"/>
+              <rect x="3" y="85" width="49" height="30" fill="url(#yellowGrad)"/>
+              <rect x="3" y="55" width="49" height="30" fill="url(#pinkGrad)"/>
+              <rect x="3" y="25" width="49" height="30" fill="url(#purpleGrad)"/>
+              <!-- Glass highlights -->
+              <line x1="8" y1="15" x2="8" y2="135" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Center Pouring Tube (Tilted) -->
+            <g transform="translate(195, 30) rotate(-35 30 75)">
+              <rect x="0" y="0" width="52" height="145" rx="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.85)" stroke-width="3"/>
+              <rect x="3" y="20" width="46" height="122" rx="12" fill="url(#cyanGrad)"/>
+              <line x1="8" y1="15" x2="8" y2="130" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Pouring Liquid Arc Stream -->
+            <path d="M 238,78 Q 285,90 295,145" fill="none" stroke="url(#cyanGrad)" stroke-width="14" stroke-linecap="round" filter="url(#glow)"/>
+            <path d="M 238,78 Q 285,90 295,145" fill="none" stroke="#e0f7fa" stroke-width="4" stroke-linecap="round"/>
+
+            <!-- Liquid Drops & Splash -->
+            <circle cx="293" cy="148" r="6" fill="#00f2fe" filter="url(#glow)"/>
+            <circle cx="310" cy="138" r="4" fill="#00f2fe"/>
+            <circle cx="282" cy="136" r="3.5" fill="#4facfe"/>
+
+            <!-- Right Receiving Bottle -->
+            <g transform="translate(270, 70)">
+              <!-- Glass Outline -->
+              <rect x="0" y="0" width="55" height="150" rx="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.7)" stroke-width="3"/>
+              <!-- Liquid layers -->
+              <rect x="3" y="115" width="49" height="32" rx="12" fill="url(#greenGrad)"/>
+              <rect x="3" y="85" width="49" height="30" fill="url(#yellowGrad)"/>
+              <rect x="3" y="55" width="49" height="30" fill="url(#cyanGrad)" filter="url(#glow)"/>
+              <!-- Glass highlights -->
+              <line x1="8" y1="15" x2="8" y2="135" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Far Right Sorted Bottle -->
+            <g transform="translate(370, 60)">
+              <rect x="0" y="0" width="55" height="150" rx="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.7)" stroke-width="3"/>
+              <rect x="3" y="25" width="49" height="122" rx="12" fill="url(#pinkGrad)"/>
+              <line x1="8" y1="15" x2="8" y2="135" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Floating Bubbles -->
+            <circle cx="85" cy="160" r="4" fill="rgba(255,255,255,0.7)"/>
+            <circle cx="100" cy="130" r="3" fill="rgba(255,255,255,0.6)"/>
+            <circle cx="295" cy="180" r="5" fill="rgba(255,255,255,0.7)"/>
+            <circle cx="395" cy="120" r="4" fill="rgba(255,255,255,0.8)"/>
+          </svg>
+        </div>
+        <div class="cover-badge-pill">
+          <i class="fa-solid fa-droplet"></i> Color Liquid Game
+        </div>
+      </div>
+
+      <div class="start-content">
+        <h1 class="start-title">
+          WATER SORT <span class="gradient-text">PUZZLE</span>
+        </h1>
+        <p class="start-subtitle">Sort the vibrant liquids into matching bottles to win!</p>
+
+        <div class="start-features-row">
+          <div class="feature-tag"><i class="fa-solid fa-layer-group"></i> 8 Fun Levels</div>
+          <div class="feature-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> ASMR Sounds</div>
+          <div class="feature-tag"><i class="fa-solid fa-rotate-left"></i> Undo Moves</div>
+        </div>
+
+        <button id="btn-play-game" class="btn-play-main pulse-glow" aria-label="Start Game">
+          <i class="fa-solid fa-circle-play"></i>
+          <span>PLAY NOW</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

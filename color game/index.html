@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coloring Book Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="hero-section">
+
+
+        <!-- HOME SCREEN -->
+        <div id="home-screen">
+            <!-- Left Side: Bird on Branch -->
+            <div class="bird-container">
+                <img src="bird.png" alt="Bird on branch">
+            </div>
+
+            <!-- Center Area: Logo and Play Button -->
+            <div class="center-content">
+                <!-- Assuming you have a logo image -->
+                <img src="coloring.png" alt="Coloring Book" class="logo">
+
+                <a href="selection.html" style="text-decoration: none;">
+                    <button class="custom-play-btn" id="play-btn" aria-label="Play">
+                        <svg class="play-icon-svg" viewBox="0 0 24 24" fill="#b32400" width="50" height="50">
+                            <!-- Rounded triangle path -->
+                            <path d="M8 5.14v14.72a2 2 0 003.07 1.69l11.04-7.36a2 2 0 000-3.38L11.07 3.45A2 2 0 008 5.14z"/>
+                        </svg>
+                    </button>
+                </a>
+            </div>
+
+            <!-- Right Side: Tree with Markers -->
+            <div class="tree-container">
+                <img src="tree.png" alt="Tree with markers">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

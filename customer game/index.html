@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Merge Cafe - Delicious Restaurant Puzzle</title>
+  <meta name="description" content="Merge delicious foods, manage customer orders, unlock generators, and renovate your dream cafe!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- Cozy Cafe Background & Decor -->
+    <div class="cafe-scenery">
+      <div class="scenery-window">
+        <div class="window-sunlight"></div>
+      </div>
+      <div class="scenery-brick-wall"></div>
+      <div class="scenery-plants"></div>
+      <div class="scenery-counter"></div>
+    </div>
+
+    <!-- Header Stats Bar -->
+    <header class="game-header">
+      <!-- Player Level & Progress Pill (12 Total Levels) -->
+      <div class="stat-pill level-pill" id="level-btn" title="Level Map & Progression (12 Total Levels) - کل 12 لیولز">
+        <div class="stat-icon level-icon">⭐</div>
+        <div class="stat-body">
+          <div class="level-val-row">
+            <span class="stat-val" id="player-level">Lv. 1</span>
+            <span class="level-max-tag">/12</span>
+          </div>
+          <div class="level-bar-wrap">
+            <div class="level-bar-fill" id="level-bar-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <button class="stat-add-btn level-map-btn" aria-label="Level Map" title="Open 12 Levels Map">🗺️</button>
+      </div>
+
+      <div class="stat-pill energy-pill" id="energy-btn" title="Energy - Click to refill">
+        <div class="stat-icon energy-icon">⚡</div>
+        <div class="stat-body">
+          <span class="stat-val" id="energy-count">94</span>
+          <span class="stat-sub" id="energy-timer">01:30</span>
+        </div>
+        <button class="stat-add-btn" aria-label="Add Energy">+</button>
+      </div>
+
+      <div class="stat-pill cash-pill" id="cash-btn" title="Cash">
+        <div class="stat-icon cash-icon">💵</div>
+        <div class="stat-body">
+          <span class="stat-val" id="cash-count">10</span>
+        </div>
+        <button class="stat-add-btn" aria-label="Add Cash">+</button>
+      </div>
+
+      <div class="stat-pill gems-pill" id="gems-btn" title="Gems">
+        <div class="stat-icon gem-icon">💎</div>
+        <div class="stat-body">
+          <span class="stat-val" id="gems-count">25</span>
+        </div>
+        <button class="stat-add-btn" aria-label="Add Gems">+</button>
+      </div>
+
+      <button class="icon-circle-btn restart-btn" id="header-restart-btn" title="Restart Game (شروع سے شروع کریں)" aria-label="Restart Game">
+        <span class="btn-emoji-icon">🔄</span>
+      </button>
+
+      <button class="icon-circle-btn settings-btn" id="settings-btn" title="Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Game Play Area -->
+    <main class="game-main">
+      <!-- Left Side Panel: Selected Item Info + Customer Orders -->
+      <section class="left-panel">
+        <!-- Selected Item Card (Matches Screenshot Top-Left) -->
+        <div class="selected-item-card" id="selected-card">
+          <div class="card-info-btn" id="item-info-btn" title="View Merge Tree">?</div>
+          <div class="card-thumb-wrap">
+            <div class="card-thumb" id="sel-thumb"></div>
+            <div class="card-level-badge" id="sel-level">2</div>
+          </div>
+          <div class="card-details">
+            <h3 class="card-title" id="sel-name">Egg Toast</h3>
+            <p class="card-desc" id="sel-desc">MERGE to get a higher-level item!</p>
+          </div>
+          <div class="card-actions" id="sel-actions">
+            <button class="card-action-btn sell-btn" id="sell-btn" title="Sell for cash">
+              <span class="coin-mini">💵</span> Sell <span id="sell-price">+2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Customer Orders Container (Matches Screenshot Left Side) -->
+        <div class="orders-wrapper">
+          <div class="orders-title">Customer Orders</div>
+          <div class="orders-list" id="orders-list">
+            <!-- Dynamic customer order cards -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Center / Main Merge Grid Board -->
+      <section class="board-panel">
+        <div class="board-wrapper">
+          <div class="grid-board" id="grid-board">
+            <!-- 9 cols x 7 rows = 63 tiles generated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Right / Bottom Float Navigation Buttons -->
+      <aside class="side-actions">
+        <!-- Storage Basket (Matches basket in screenshot) -->
+        <button class="action-float-btn basket-btn" id="storage-btn" title="Storage Backpack">
+          <div class="float-btn-icon">🧺</div>
+          <span class="float-badge" id="storage-badge">0/6</span>
+        </button>
+
+        <!-- Renovation / Quest Button (Matches green back/quest button in screenshot) -->
+        <button class="action-float-btn renovate-btn" id="renovate-btn" title="Renovate Cafe">
+          <div class="float-btn-icon">🔨</div>
+          <span class="float-badge quest-badge" id="quest-alert-badge">!</span>
+        </button>
+
+        <!-- Recipe Book / Guide Button -->
+        <button class="action-float-btn book-btn" id="recipe-book-btn" title="Recipe Book">
+          <div class="float-btn-icon">📖</div>
+        </button>
+      </aside>
+    </main>
+
+    <!-- Renovation Mode Overlay Modal -->
+    <div class="modal-backdrop" id="renovate-modal">
+      <div class="modal-box renovate-box">
+        <div class="modal-header">
+          <h2>🔨 Cafe Renovation</h2>
+          <button class="modal-close-btn" id="close-renovate-btn">&times;</button>
+        </div>
+        <div class="renovate-view">
+          <div class="cafe-preview" id="cafe-visual-preview">
+            <div class="cafe-room">
+              <div class="room-wall" id="room-wall"></div>
+              <div class="room-floor" id="room-floor"></div>
+              <div class="room-counter" id="room-counter"></div>
+              <div class="room-tables" id="room-tables"></div>
+              <div class="room-decor" id="room-decor"></div>
+              <div class="room-sign" id="room-sign"></div>
+            </div>
+          </div>
+          <div class="renovate-tasks" id="renovate-tasks-list">
+            <!-- Renovation tasks list -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Storage Drawer Modal -->
+    <div class="modal-backdrop" id="storage-modal">
+      <div class="modal-box storage-box">
+        <div class="modal-header">
+          <h2>🧺 Item Storage</h2>
+          <button class="modal-close-btn" id="close-storage-btn">&times;</button>
+        </div>
+        <p class="modal-desc">Drag or tap items to store them here and free up board space!</p>
+        <div class="storage-slots-grid" id="storage-grid">
+          <!-- 6-10 Storage slots -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipe / Merge Tree Encyclopedia Modal -->
+    <div class="modal-backdrop" id="recipe-modal">
+      <div class="modal-box recipe-box">
+        <div class="modal-header">
+          <h2>📖 Recipe & Merge Encyclopedia</h2>
+          <button class="modal-close-btn" id="close-recipe-btn">&times;</button>
+        </div>
+        <div class="recipe-tabs">
+          <button class="recipe-tab-btn active" data-chain="toast">🍞 Bread & Toast</button>
+          <button class="recipe-tab-btn" data-chain="bakery">🥐 Bakery & Sweets</button>
+          <button class="recipe-tab-btn" data-chain="drinks">🍹 Fresh Drinks</button>
+          <button class="recipe-tab-btn" data-chain="generators">🍳 Kitchen Appliances</button>
+        </div>
+        <div class="recipe-chain-display" id="recipe-chain-content">
+          <!-- Merge chain line preview -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Energy Shop Modal -->
+    <div class="modal-backdrop" id="energy-modal">
+      <div class="modal-box shop-box">
+        <div class="modal-header">
+          <h2>⚡ Energy Refill</h2>
+          <button class="modal-close-btn" id="close-energy-btn">&times;</button>
+        </div>
+        <div class="shop-grid">
+          <div class="shop-card">
+            <div class="shop-icon">⚡ +50</div>
+            <div class="shop-title">Quick Snack</div>
+            <button class="shop-buy-btn" id="buy-energy-gems-btn">💎 10 Gems</button>
+          </div>
+          <div class="shop-card">
+            <div class="shop-icon">⚡ +100</div>
+            <div class="shop-title">Full Meal (Max)</div>
+            <button class="shop-buy-btn" id="buy-full-energy-btn">💎 18 Gems</button>
+          </div>
+          <div class="shop-card free-offer">
+            <div class="shop-icon">⚡ +25</div>
+            <div class="shop-title">Daily Boost</div>
+            <button class="shop-buy-btn free-btn" id="claim-free-energy-btn">Free Refill!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-backdrop" id="settings-modal">
+      <div class="modal-box settings-box">
+        <div class="modal-header">
+          <h2>⚙️ Game Settings</h2>
+          <button class="modal-close-btn" id="close-settings-btn">&times;</button>
+        </div>
+        <div class="settings-content">
+          <div class="setting-row">
+            <span>Sound Effects 🔊</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="sound-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <span>Cafe Music 🎵</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="music-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <span>Haptic / Visual Pop ✨</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="haptic-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-buttons">
+            <button class="danger-btn" id="reset-game-btn">🔄 Reset Board & Progress</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12-Level Progression Roadmap Modal -->
+    <div class="modal-backdrop" id="level-modal">
+      <div class="modal-box level-box">
+        <div class="modal-header">
+          <h2>⭐ Cafe Level Journey (کل 12 لیولز)</h2>
+          <button class="modal-close-btn" id="close-level-btn">&times;</button>
+        </div>
+        <div class="level-summary-card">
+          <div class="level-current-badge">
+            <div class="cur-lvl-icon" id="cur-lvl-icon">⭐</div>
+            <div class="cur-lvl-info">
+              <div class="cur-lvl-num" id="modal-cur-lvl">Level 1 of 12</div>
+              <div class="cur-lvl-title" id="modal-cur-title">Cafe Trainee (نو آموز شیف)</div>
+            </div>
+          </div>
+          <div class="level-xp-details">
+            <div class="xp-text-row">
+              <span class="xp-label">Level Experience (XP):</span>
+              <span class="xp-val-text" id="modal-xp-text">0 / 40 XP</span>
+            </div>
+            <div class="modal-xp-bar-wrap">
+              <div class="modal-xp-bar-fill" id="modal-xp-fill" style="width: 0%"></div>
+            </div>
+            <div class="xp-how-to">💡 Earn XP by merging items, completing customer orders, & cafe renovations!</div>
+          </div>
+        </div>
+        <div class="level-roadmap-header">
+          <span class="roadmap-tag">🗺️ All 12 Levels & Rewards Road</span>
+          <span class="roadmap-count" id="modal-completed-count">Completed: 0 / 12</span>
+        </div>
+        <div class="level-map-container" id="level-map-container">
+          <!-- 12 level cards rendered dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Up Celebration Modal -->
+    <div class="modal-backdrop" id="levelup-modal">
+      <div class="modal-box levelup-box">
+        <div class="levelup-sparkle-bg"></div>
+        <div class="levelup-badge-anim">🏆</div>
+        <h2 class="levelup-title">LEVEL UP! 🎉</h2>
+        <div class="levelup-sub-urdu">مبارک ہو! نیا لیول انلاک ہو گیا</div>
+        <div class="levelup-pill-display">
+          <span class="levelup-number-tag" id="levelup-lvl-num">Level 2</span>
+          <span class="levelup-total-tag">of 12</span>
+        </div>
+        <div class="levelup-unlocked-title" id="levelup-title-name">Toast Artisan (ٹوست کاریگر)</div>
+        
+        <div class="levelup-rewards-box">
+          <div class="rewards-heading">🎁 Rewards Unlocked (انعامات):</div>
+          <div class="levelup-rewards-list" id="levelup-rewards-list">
+            <!-- Dynamic reward items -->
+          </div>
+        </div>
+        
+        <button class="claim-reward-btn" id="claim-levelup-btn">
+          <span>🎉 CLAIM REWARDS & PLAY</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Start Screen Overlay with Play Button -->
+    <div id="start-screen" class="start-screen-overlay">
+      <div class="start-screen-card">
+        <div class="start-brand">
+          <div class="start-icon-badge">
+            <span class="start-badge-emoji">☕</span>
+            <span class="start-badge-sub-emoji">🥐</span>
+          </div>
+          <h1 class="start-title">MERGE CAFE</h1>
+          <p class="start-subtitle">Delicious Restaurant Puzzle</p>
+        </div>
+
+        <div class="start-features">
+          <div class="start-feature-pill">
+            <span class="feature-icon">⭐</span>
+            <span>12 Cafe Levels</span>
+          </div>
+          <div class="start-feature-pill">
+            <span class="feature-icon">⚡</span>
+            <span>Merge Dishes</span>
+          </div>
+          <div class="start-feature-pill">
+            <span class="feature-icon">👨‍🍳</span>
+            <span>Serve Customers</span>
+          </div>
+          <div class="start-feature-pill">
+            <span class="feature-icon">🔨</span>
+            <span>Decorate Cafe</span>
+          </div>
+        </div>
+
+        <button class="play-btn-large" id="play-btn">
+          <span class="play-icon">▶</span>
+          <span class="play-text">START NEW GAME</span>
+        </button>
+
+        <div class="start-hint">12 dynamic levels with rewards, cooking & merging!</div>
+      </div>
+    </div>
+
+    <!-- Floating FX Container for Sparkles and Floaters -->
+    <div id="fx-container" class="fx-container"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

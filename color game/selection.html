@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coloring Game - Select Drawing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Define Shining Gradients Globally -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <!-- 1. Shiny Gold -->
+            <linearGradient id="shine-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#bf953f" />
+                <stop offset="25%" stop-color="#fcf6ba" />
+                <stop offset="50%" stop-color="#b38728" />
+                <stop offset="75%" stop-color="#fbf5b7" />
+                <stop offset="100%" stop-color="#aa771c" />
+            </linearGradient>
+            <!-- 2. Shiny Silver -->
+            <linearGradient id="shine-silver" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#cfd9df" />
+                <stop offset="50%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#9ea7b0" />
+            </linearGradient>
+            <!-- 3. Shiny Bronze -->
+            <linearGradient id="shine-bronze" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#cd7f32" />
+                <stop offset="50%" stop-color="#ffcc99" />
+                <stop offset="100%" stop-color="#8b4513" />
+            </linearGradient>
+            <!-- 4. Shiny Ruby -->
+            <linearGradient id="shine-ruby" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff0844" />
+                <stop offset="50%" stop-color="#ffb199" />
+                <stop offset="100%" stop-color="#b3002d" />
+            </linearGradient>
+            <!-- 5. Shiny Emerald -->
+            <linearGradient id="shine-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f260" />
+                <stop offset="50%" stop-color="#b5ffc8" />
+                <stop offset="100%" stop-color="#0575e6" />
+            </linearGradient>
+            <!-- 6. Shiny Sapphire -->
+            <linearGradient id="shine-sapphire" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00c6ff" />
+                <stop offset="50%" stop-color="#e0f7fa" />
+                <stop offset="100%" stop-color="#0072ff" />
+            </linearGradient>
+            <!-- 7. Shiny Amethyst -->
+            <linearGradient id="shine-amethyst" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#da22ff" />
+                <stop offset="50%" stop-color="#f8c8ff" />
+                <stop offset="100%" stop-color="#9733ee" />
+            </linearGradient>
+            <!-- 8. Shiny Rose Gold -->
+            <linearGradient id="shine-rosegold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f4c4c4" />
+                <stop offset="35%" stop-color="#f7b7a3" />
+                <stop offset="70%" stop-color="#ea8d8d" />
+                <stop offset="100%" stop-color="#d46a6a" />
+            </linearGradient>
+            <!-- 9. Shiny Aqua -->
+            <linearGradient id="shine-aqua" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f5d4" />
+                <stop offset="50%" stop-color="#e0ffff" />
+                <stop offset="100%" stop-color="#00bbf9" />
+            </linearGradient>
+            <!-- 10. Magic Rainbow -->
+            <linearGradient id="shine-magic" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff00ff" />
+                <stop offset="25%" stop-color="#00ffff" />
+                <stop offset="50%" stop-color="#ffff00" />
+                <stop offset="75%" stop-color="#ff007f" />
+                <stop offset="100%" stop-color="#7928ca" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="hero-section" style="background-image: url('image2.png');">
+        <div class="top-bar">
+            <a href="index.html" style="text-decoration: none;">
+                <button class="custom-back-btn" id="back-btn" aria-label="Back">
+                    <span class="back-icon"></span>
+                </button>
+            </a>
+        </div>
+
+        <div id="selection-screen">
+            <!-- Category Filtering Bar -->
+            <div class="category-tabs">
+                <button class="category-btn active" data-filter="all">All</button>
+                <button class="category-btn" data-filter="flowers">Flowers</button>
+                <button class="category-btn" data-filter="animals">Animals</button>
+                <button class="category-btn" data-filter="home">Home</button>
+                <button class="category-btn" data-filter="girls">Girls</button>
+                <button class="category-btn" data-filter="books">Books</button>
+            </div>
+
+            <div class="cards-grid">
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons for active drawing -->
+    <button class="nav-btn prev-btn" id="prev-btn" aria-label="Previous" style="display:none;">&#10094;</button>
+    <button class="nav-btn next-btn" id="next-btn" aria-label="Next" style="display:none;">&#10095;</button>
+
+    <!-- Color Palette UI -->
+    <div class="color-palette" id="color-palette">
+        <!-- Reds & Pinks -->
+        <div class="color-swatch selected" style="--c: #ff0000;" data-color="#ff0000" title="Red"></div>
+        <div class="color-swatch" style="--c: #e91e63;" data-color="#e91e63" title="Pink"></div>
+        <div class="color-swatch" style="--c: #f06292;" data-color="#f06292" title="Light Pink"></div>
+
+        <!-- Oranges & Peaches -->
+        <div class="color-swatch" style="--c: #ff9800;" data-color="#ff9800" title="Orange"></div>
+        <div class="color-swatch" style="--c: #ff5722;" data-color="#ff5722" title="Deep Orange"></div>
+        <div class="color-swatch" style="--c: #ffcc80;" data-color="#ffcc80" title="Peach"></div>
+
+        <!-- Yellows -->
+        <div class="color-swatch" style="--c: #ffeb3b;" data-color="#ffeb3b" title="Yellow"></div>
+        <div class="color-swatch" style="--c: #fbc02d;" data-color="#fbc02d" title="Golden Yellow"></div>
+
+        <!-- Greens -->
+        <div class="color-swatch" style="--c: #4caf50;" data-color="#4caf50" title="Green"></div>
+        <div class="color-swatch" style="--c: #8bc34a;" data-color="#8bc34a" title="Light Green"></div>
+        <div class="color-swatch" style="--c: #009688;" data-color="#009688" title="Teal"></div>
+        <div class="color-swatch" style="--c: #aed581;" data-color="#aed581" title="Lime"></div>
+
+        <!-- Blues & Cyans -->
+        <div class="color-swatch" style="--c: #00bcd4;" data-color="#00bcd4" title="Cyan"></div>
+        <div class="color-swatch" style="--c: #03a9f4;" data-color="#03a9f4" title="Light Blue"></div>
+        <div class="color-swatch" style="--c: #2196f3;" data-color="#2196f3" title="Blue"></div>
+        <div class="color-swatch" style="--c: #3f51b5;" data-color="#3f51b5" title="Indigo"></div>
+
+        <!-- Purples -->
+        <div class="color-swatch" style="--c: #9c27b0;" data-color="#9c27b0" title="Purple"></div>
+        <div class="color-swatch" style="--c: #673ab7;" data-color="#673ab7" title="Deep Purple"></div>
+        <div class="color-swatch" style="--c: #ce93d8;" data-color="#ce93d8" title="Light Purple"></div>
+
+        <!-- Browns -->
+        <div class="color-swatch" style="--c: #795548;" data-color="#795548" title="Brown"></div>
+        <div class="color-swatch" style="--c: #8d6e63;" data-color="#8d6e63" title="Light Brown"></div>
+
+        <!-- Grays & Black -->
+        <div class="color-swatch" style="--c: #9e9e9e;" data-color="#9e9e9e" title="Gray"></div>
+        <div class="color-swatch" style="--c: #607d8b;" data-color="#607d8b" title="Blue Gray"></div>
+        <div class="color-swatch" style="--c: #000000;" data-color="#000000" title="Black"></div>
+
+        <!-- Shining Colors (10 Shining Colors) -->
+        <div class="color-swatch shine-swatch shine-gold" data-color="url(#shine-gold)" title="Shiny Gold"></div>
+        <div class="color-swatch shine-swatch shine-silver" data-color="url(#shine-silver)" title="Shiny Silver"></div>
+        <div class="color-swatch shine-swatch shine-bronze" data-color="url(#shine-bronze)" title="Shiny Bronze"></div>
+        <div class="color-swatch shine-swatch shine-ruby" data-color="url(#shine-ruby)" title="Shiny Ruby"></div>
+        <div class="color-swatch shine-swatch shine-emerald" data-color="url(#shine-emerald)" title="Shiny Emerald"></div>
+        <div class="color-swatch shine-swatch shine-sapphire" data-color="url(#shine-sapphire)" title="Shiny Sapphire"></div>
+        <div class="color-swatch shine-swatch shine-amethyst" data-color="url(#shine-amethyst)" title="Shiny Amethyst"></div>
+        <div class="color-swatch shine-swatch shine-rosegold" data-color="url(#shine-rosegold)" title="Shiny Rose Gold"></div>
+        <div class="color-swatch shine-swatch shine-aqua" data-color="url(#shine-aqua)" title="Shiny Aqua"></div>
+        <div class="color-swatch shine-swatch shine-magic" data-color="url(#shine-magic)" title="Magic Rainbow"></div>
+
+        <!-- Eraser -->
+        <div class="color-swatch eraser" style="--c: #ffffff;" data-color="#ffffff" title="Eraser"></div>
+        <button class="close-btn" id="close-btn" title="Done / Close">✕</button>
+    </div>
+
+    <script src="image_data.js?v=6"></script>
+    <script src="app.js"></script>
+    <script>
+        const grid = document.querySelector('.cards-grid');
+        const colorPalette = document.getElementById('color-palette');
+        const closeBtn = document.getElementById('close-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+
+        let currentColor = { r: 255, g: 0, b: 0, a: 255 }; // Default Red
+        let currentIndex = -1;
+        let cards = [];
+
+        // Category Filter Logic
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (window.playClickSound) window.playClickSound();
+
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                cards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // --- 1. GENERATE THE AVAILABLE CARDS ---
+        const categoriesList = ['flowers', 'animals', 'home', 'girls', 'books'];
+        const availableImages = [];
+        categoriesList.forEach(cat => {
+            for (let i = 1; i <= 24; i++) {
+                availableImages.push(`${cat}_${i}`);
+            }
+        });
+
+        availableImages.forEach((key, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.index = i;
+            card.dataset.category = key.split('_')[0];
+
+            const cardInner = document.createElement('div');
+            cardInner.className = 'card-inner';
+
+            const img = document.createElement('img');
+            img.className = 'drawing-img';
+            img.crossOrigin = 'anonymous';
+
+            if (window.imageDatabase && window.imageDatabase[key]) {
+                img.src = window.imageDatabase[key];
+            } else {
+                img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><rect width="500" height="500" fill="white"/><circle cx="250" cy="250" r="100" fill="none" stroke="black" stroke-width="4"/></svg>');
+            }
+
+            cardInner.appendChild(img);
+            card.appendChild(cardInner);
+            cards.push(card);
+            grid.appendChild(card);
+        });
+
+        // --- 2. GLOBAL CANVAS ---
+        const globalCanvas = document.createElement('canvas');
+        globalCanvas.className = 'coloring-canvas';
+        globalCanvas.style.display = 'none';
+        globalCanvas.style.maxWidth = '100%';
+        globalCanvas.style.maxHeight = '100%';
+        globalCanvas.style.width = 'auto';
+        globalCanvas.style.height = 'auto';
+        globalCanvas.style.margin = 'auto';
+        globalCanvas.style.cursor = 'crosshair';
+        const ctx = globalCanvas.getContext('2d', { willReadFrequently: true });
+
+        // --- 3. COLOR PALETTE LOGIC ---
+        function getShinePixel(type, x, y) {
+            // Fast pseudo-random hash for glitter sparkles
+            const h1 = ((Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1 + 1) % 1;
+            const h2 = ((Math.sin(Math.floor(x / 4) * 37.719 + Math.floor(y / 4) * 91.31) * 23421.631) % 1 + 1) % 1;
+            const h3 = ((Math.sin(Math.floor(x / 8) * 17.13 + Math.floor(y / 8) * 53.71) * 31415.926) % 1 + 1) % 1;
+
+            // Diagonal metallic wave gradient
+            const wave = Math.sin((x + y * 0.8) * 0.035) * 0.5 + 0.5; // 0..1
+            const specular = Math.pow(Math.sin((x - y * 0.6) * 0.02) * 0.5 + 0.5, 4); // glossy sheen 0..1
+
+            // Glitter sparkle highlights: micro-flecks + bright diamond stars
+            let sparkle = 0;
+            if (h1 > 0.82) sparkle += (h1 - 0.82) * 4.5;
+            if (h2 > 0.90) sparkle += 0.8;
+            if (h3 > 0.94) {
+                const gx = Math.abs((x % 8) - 4);
+                const gy = Math.abs((y % 8) - 4);
+                if (gx + gy <= 2) sparkle += 1.2;
+            }
+
+            let r = 255, g = 215, b = 0;
+
+            if (type === 'shine-gold') {
+                r = Math.min(255, 190 + wave * 65 + specular * 70 + sparkle * 90);
+                g = Math.min(255, 140 + wave * 85 + specular * 60 + sparkle * 80);
+                b = Math.min(255, 20 + wave * 50 + specular * 50 + sparkle * 90);
+            } else if (type === 'shine-silver') {
+                const base = 180 + wave * 55 + specular * 75 + sparkle * 100;
+                r = Math.min(255, base);
+                g = Math.min(255, base + 5);
+                b = Math.min(255, base + 15);
+            } else if (type === 'shine-bronze') {
+                r = Math.min(255, 175 + wave * 60 + specular * 70 + sparkle * 80);
+                g = Math.min(255, 95 + wave * 50 + specular * 50 + sparkle * 70);
+                b = Math.min(255, 30 + wave * 30 + specular * 40 + sparkle * 60);
+            } else if (type === 'shine-ruby') {
+                r = Math.min(255, 200 + wave * 55 + specular * 70 + sparkle * 80);
+                g = Math.min(255, 10 + wave * 35 + specular * 60 + sparkle * 90);
+                b = Math.min(255, 40 + wave * 40 + specular * 70 + sparkle * 110);
+            } else if (type === 'shine-emerald') {
+                r = Math.min(255, 0 + wave * 40 + specular * 70 + sparkle * 100);
+                g = Math.min(255, 190 + wave * 65 + specular * 60 + sparkle * 75);
+                b = Math.min(255, 70 + wave * 60 + specular * 60 + sparkle * 100);
+            } else if (type === 'shine-sapphire') {
+                r = Math.min(255, 0 + wave * 40 + specular * 70 + sparkle * 100);
+                g = Math.min(255, 120 + wave * 80 + specular * 70 + sparkle * 95);
+                b = Math.min(255, 210 + wave * 45 + specular * 50 + sparkle * 65);
+            } else if (type === 'shine-amethyst') {
+                r = Math.min(255, 170 + wave * 60 + specular * 75 + sparkle * 95);
+                g = Math.min(255, 20 + wave * 40 + specular * 65 + sparkle * 95);
+                b = Math.min(255, 210 + wave * 45 + specular * 50 + sparkle * 65);
+            } else if (type === 'shine-rosegold') {
+                r = Math.min(255, 225 + wave * 30 + specular * 40 + sparkle * 50);
+                g = Math.min(255, 140 + wave * 50 + specular * 60 + sparkle * 70);
+                b = Math.min(255, 150 + wave * 50 + specular * 60 + sparkle * 80);
+            } else if (type === 'shine-aqua') {
+                r = Math.min(255, 0 + wave * 50 + specular * 80 + sparkle * 110);
+                g = Math.min(255, 210 + wave * 45 + specular * 50 + sparkle * 60);
+                b = Math.min(255, 210 + wave * 45 + specular * 50 + sparkle * 60);
+            } else if (type === 'shine-magic') {
+                const hue = ((x * 0.7 + y * 0.7) * 0.5) % 360;
+                const s = 0.9, l = Math.min(0.9, 0.55 + specular * 0.25 + sparkle * 0.35);
+                const c = (1 - Math.abs(2 * l - 1)) * s;
+                const hp = hue / 60;
+                const xVal = c * (1 - Math.abs((hp % 2) - 1));
+                let r1 = 0, g1 = 0, b1 = 0;
+                if (hp >= 0 && hp < 1) { r1 = c; g1 = xVal; b1 = 0; }
+                else if (hp >= 1 && hp < 2) { r1 = xVal; g1 = c; b1 = 0; }
+                else if (hp >= 2 && hp < 3) { r1 = 0; g1 = c; b1 = xVal; }
+                else if (hp >= 3 && hp < 4) { r1 = 0; g1 = xVal; b1 = c; }
+                else if (hp >= 4 && hp < 5) { r1 = xVal; g1 = 0; b1 = c; }
+                else { r1 = c; g1 = 0; b1 = xVal; }
+                const m = l - c / 2;
+                r = Math.min(255, Math.floor((r1 + m) * 255));
+                g = Math.min(255, Math.floor((g1 + m) * 255));
+                b = Math.min(255, Math.floor((b1 + m) * 255));
+            }
+
+            return { r: Math.floor(r), g: Math.floor(g), b: Math.floor(b), a: 255 };
+        }
+
+        function hexToRgba(hex) {
+            if (hex.startsWith('url(#')) {
+                const shineType = hex.replace('url(#', '').replace(')', '');
+                return {
+                    r: 255, g: 215, b: 0, a: 255,
+                    isShine: true,
+                    shineType: shineType
+                };
+            }
+
+            let c;
+            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+                c = hex.substring(1).split('');
+                if (c.length == 3) {
+                    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+                }
+                c = parseInt(c.join(''), 16);
+                return { r: (c >> 16) & 255, g: (c >> 8) & 255, b: c & 255, a: 255, isShine: false };
+            }
+            return { r: 255, g: 0, b: 0, a: 255, isShine: false };
+        }
+
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (swatch.classList.contains('used') || swatch.classList.contains('locked')) {
+                    swatch.classList.remove('shake');
+                    void swatch.offsetWidth; // trigger reflow
+                    swatch.classList.add('shake');
+                    return;
+                }
+                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                swatch.classList.add('selected');
+
+                let colorAttr = swatch.getAttribute('data-color');
+                currentColor = hexToRgba(colorAttr);
+            });
+        });
+
+        // --- 4. OPEN & CLOSE LOGIC ---
+        function openCard(index) {
+            const card = cards[index];
+            if (!card) return;
+
+            grid.classList.add('has-active-card');
+            card.classList.add('active-card');
+            colorPalette.style.display = 'flex';
+            if (prevBtn) prevBtn.style.display = 'flex';
+            if (nextBtn) nextBtn.style.display = 'flex';
+            currentIndex = index;
+
+            const cardInner = card.querySelector('.card-inner');
+            const img = cardInner.querySelector('.drawing-img');
+            img.style.display = 'none';
+
+            globalCanvas.style.display = 'block';
+            cardInner.appendChild(globalCanvas);
+
+            const renderImage = () => {
+                const w = img.naturalWidth || 600;
+                const h = img.naturalHeight || 600;
+                globalCanvas.width = w;
+                globalCanvas.height = h;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, w, h);
+                try {
+                    ctx.drawImage(img, 0, 0, w, h);
+                } catch(err) {
+                    console.error("Canvas draw error:", err);
+                }
+            };
+
+            if (img.complete && (img.naturalWidth > 0 || img.width > 0)) {
+                renderImage();
+            } else {
+                img.onload = renderImage;
+            }
+        }
+
+        function closeActiveCard() {
+            if (currentIndex === -1) return;
+            const card = cards[currentIndex];
+            const img = card.querySelector('.drawing-img');
+
+            // Save canvas back to image so thumbnail updates
+            if (img && globalCanvas.width > 0) {
+                try {
+                    img.src = globalCanvas.toDataURL('image/png');
+                } catch(err) {
+                    console.error("Canvas export error:", err);
+                }
+            }
+            if (img) img.style.display = 'block';
+
+            globalCanvas.style.display = 'none';
+            if (globalCanvas.parentNode) globalCanvas.parentNode.removeChild(globalCanvas);
+
+            grid.classList.remove('has-active-card');
+            card.classList.remove('active-card');
+            colorPalette.style.display = 'none';
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            currentIndex = -1;
+        }
+
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.card');
+            if (card && !card.classList.contains('active-card')) {
+                openCard(parseInt(card.dataset.index));
+            }
+        });
+
+        closeBtn.addEventListener('click', closeActiveCard);
+
+        function getVisibleCardIndices() {
+            return cards.map((c, i) => ({ card: c, index: i }))
+                        .filter(item => item.card.style.display !== 'none' || item.index === currentIndex)
+                        .map(item => item.index);
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (currentIndex !== -1) {
+                    const visible = getVisibleCardIndices();
+                    const currentPos = visible.indexOf(currentIndex);
+                    let prevPos = currentPos - 1;
+                    if (prevPos < 0) prevPos = visible.length - 1;
+                    const nextIdx = visible[prevPos];
+                    closeActiveCard();
+                    openCard(nextIdx);
+                }
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (currentIndex !== -1) {
+                    const visible = getVisibleCardIndices();
+                    const currentPos = visible.indexOf(currentIndex);
+                    let nextPos = currentPos + 1;
+                    if (nextPos >= visible.length) nextPos = 0;
+                    const nextIdx = visible[nextPos];
+                    closeActiveCard();
+                    openCard(nextIdx);
+                }
+            });
+        }
+
+        // --- 5. FLOOD FILL LOGIC & CANVAS INTERACTION ---
+        function spawnSparkles(x, y) {
+            const sparkles = ['✨', '⭐', '🌟', '💫', '✦'];
+            for (let i = 0; i < 8; i++) {
+                const el = document.createElement('div');
+                el.className = 'sparkle-particle';
+                el.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+                el.style.left = `${x + (Math.random() * 40 - 20)}px`;
+                el.style.top = `${y + (Math.random() * 40 - 20)}px`;
+                const destX = (Math.random() - 0.5) * 120;
+                const destY = (Math.random() - 0.5) * 120 - 40;
+                el.style.setProperty('--dest-x', `${destX}px`);
+                el.style.setProperty('--dest-y', `${destY}px`);
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 750);
+            }
+        }
+
+        function handleCanvasTap(clientX, clientY) {
+            if (currentIndex === -1) return;
+            const rect = globalCanvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+
+            const scaleX = globalCanvas.width / rect.width;
+            const scaleY = globalCanvas.height / rect.height;
+
+            const x = Math.floor((clientX - rect.left) * scaleX);
+            const y = Math.floor((clientY - rect.top) * scaleY);
+
+            if (x >= 0 && x < globalCanvas.width && y >= 0 && y < globalCanvas.height) {
+                const filled = floodFill(x, y, currentColor);
+                if (filled) {
+                    if (currentColor.isShine) {
+                        spawnSparkles(clientX, clientY);
+
+                        // Lock this specific shining color so it cannot be used again
+                        const usedType = currentColor.shineType;
+                        const usedSwatch = document.querySelector(`.color-swatch[data-color="url(#${usedType})"]`);
+                        if (usedSwatch) {
+                            usedSwatch.classList.add('used', 'locked');
+                            usedSwatch.classList.remove('selected');
+                            usedSwatch.setAttribute('title', usedSwatch.getAttribute('title') + ' (Used)');
+                        }
+
+                        // Auto-switch to default Red swatch
+                        const defaultSwatch = document.querySelector('.color-swatch[data-color="#ff0000"]');
+                        if (defaultSwatch) {
+                            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                            defaultSwatch.classList.add('selected');
+                            currentColor = hexToRgba('#ff0000');
+                        }
+                    }
+                    if (window.playPopSound) window.playPopSound();
+                }
+            }
+        }
+
+        globalCanvas.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleCanvasTap(e.clientX, e.clientY);
+        });
+
+        globalCanvas.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleCanvasTap(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        function floodFill(startX, startY, fillColor) {
+            try {
+                const width = globalCanvas.width;
+                const height = globalCanvas.height;
+                if (width === 0 || height === 0) return false;
+
+                const imgData = ctx.getImageData(0, 0, width, height);
+                const data = imgData.data;
+
+                const startPos = (startY * width + startX) * 4;
+                const startR = data[startPos];
+                const startG = data[startPos + 1];
+                const startB = data[startPos + 2];
+                const startA = data[startPos + 3];
+
+                // Dark line threshold: do not fill on black outline
+                if (startR < 70 && startG < 70 && startB < 70 && startA > 100) return false;
+
+                // If already plain target color and not shine, return
+                if (!fillColor.isShine &&
+                    Math.abs(startR - fillColor.r) < 5 &&
+                    Math.abs(startG - fillColor.g) < 5 &&
+                    Math.abs(startB - fillColor.b) < 5) return false;
+
+                const tolerance = 55;
+                const stack = [startY * width + startX];
+                const visited = new Uint8Array(width * height);
+                visited[startY * width + startX] = 1;
+
+                while (stack.length > 0) {
+                    const pt = stack.pop();
+                    const idx = pt * 4;
+
+                    const x = pt % width;
+                    const y = Math.floor(pt / width);
+
+                    if (fillColor.isShine) {
+                        const sColor = getShinePixel(fillColor.shineType, x, y);
+                        data[idx] = sColor.r;
+                        data[idx + 1] = sColor.g;
+                        data[idx + 2] = sColor.b;
+                        data[idx + 3] = 255;
+                    } else {
+                        data[idx] = fillColor.r;
+                        data[idx + 1] = fillColor.g;
+                        data[idx + 2] = fillColor.b;
+                        data[idx + 3] = 255;
+                    }
+
+                    // 4-way neighbors
+                    if (x > 0) checkNeighbor(pt - 1);
+                    if (x < width - 1) checkNeighbor(pt + 1);
+                    if (y > 0) checkNeighbor(pt - width);
+                    if (y < height - 1) checkNeighbor(pt + width);
+                }
+
+                function checkNeighbor(nPt) {
+                    if (visited[nPt]) return;
+                    const nIdx = nPt * 4;
+                    const r = data[nIdx];
+                    const g = data[nIdx + 1];
+                    const b = data[nIdx + 2];
+                    const a = data[nIdx + 3];
+
+                    // Boundary check (dark line or transparent edge)
+                    if (r < 70 && g < 70 && b < 70 && a > 100) return;
+
+                    if (Math.abs(r - startR) <= tolerance &&
+                        Math.abs(g - startG) <= tolerance &&
+                        Math.abs(b - startB) <= tolerance) {
+                        visited[nPt] = 1;
+                        stack.push(nPt);
+                    }
+                }
+
+                ctx.putImageData(imgData, 0, 0);
+                return true;
+            } catch (err) {
+                console.error("Flood fill error:", err);
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

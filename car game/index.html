@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Rush Speedway - Car Game</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="appContainer">
+        <!-- Main Game Canvas Container -->
+        <div id="gameWrapper">
+            <canvas id="gameCanvas" width="1000" height="650"></canvas>
+
+            <!-- Floating Score Popup Layer -->
+            <div id="floatingPopups"></div>
+
+            <!-- In-Game HUD Overlay -->
+            <div id="hud">
+                <div class="hud-top">
+                    <div class="hud-card score-card">
+                        <span class="hud-label"><i class="fa-solid fa-trophy"></i> SCORE</span>
+                        <span id="scoreValue" class="hud-value">0</span>
+                    </div>
+                    
+                    <div class="hud-card coins-card">
+                        <span class="hud-label"><i class="fa-solid fa-coins"></i> COINS</span>
+                        <span id="coinsValue" class="hud-value">0</span>
+                    </div>
+
+                    <div class="hud-card combo-card" id="comboCard">
+                        <span class="hud-label"><i class="fa-solid fa-bolt"></i> COMBO</span>
+                        <span id="comboValue" class="hud-value">x1</span>
+                    </div>
+
+                    <div class="hud-card level-card" id="levelCard">
+                        <span class="hud-label"><i class="fa-solid fa-gauge-high"></i> LEVEL</span>
+                        <span id="levelValue" class="hud-value" style="color: #00ff88;">LVL 1</span>
+                    </div>
+
+                    <div class="hud-card shield-card" id="shieldCard" style="display: none;">
+                        <span class="hud-label"><i class="fa-solid fa-shield-halved"></i> SHIELD</span>
+                        <span id="shieldTimerValue" class="hud-value" style="color: #00f0ff;">10.0s</span>
+                    </div>
+
+                    <div class="hud-right-actions">
+                        <button id="muteBtn" class="icon-btn" title="Toggle Sound">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <button id="pauseBtn" class="icon-btn" title="Pause Game">
+                            <i class="fa-solid fa-pause"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Speedometer & Nitro Bar -->
+                <div class="hud-bottom-status">
+                    <div class="speedometer-box">
+                        <div class="speed-digital">
+                            <span id="speedValue">0</span>
+                            <small>KM/H</small>
+                        </div>
+                        <div class="speed-bar-bg">
+                            <div id="speedBarFill" class="speed-bar-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="nitro-box">
+                        <div class="nitro-label"><i class="fa-solid fa-fire"></i> NITRO</div>
+                        <div class="nitro-bar-bg">
+                            <div id="nitroBarFill" class="nitro-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive On-Screen Touch / Mouse Controls -->
+            <div id="touchControls">
+                <div class="control-group steer-group">
+                    <button id="leftBtn" class="ctrl-btn steer-btn" title="Steer Left">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <button id="rightBtn" class="ctrl-btn steer-btn" title="Steer Right">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="control-group action-group">
+                    <button id="shieldBtn" class="ctrl-btn shield-btn" title="Invincible Shield (Press E or Click): Max 3 times per race!">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="shieldBtnLabel">SHIELD</span>
+                        <div class="shield-badge-pills" id="shieldPills">
+                            <span class="shield-dot active"></span>
+                            <span class="shield-dot active"></span>
+                            <span class="shield-dot active"></span>
+                        </div>
+                    </button>
+                    <button id="nitroBtn" class="ctrl-btn nitro-btn" title="Nitro Boost (Shift)">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                        <span>BOOST</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Start Menu Overlay -->
+            <div id="startModal" class="modal-overlay active">
+                <div class="modal-card">
+                    <div class="logo-box">
+                        <i class="fa-solid fa-car-side logo-icon"></i>
+                        <h1 class="game-title">COIN RUSH <span class="highlight">SPEEDWAY</span></h1>
+                        <p class="game-tagline">Press FORWARD to drive & collect numbered coins!</p>
+                    </div>
+
+                    <div class="stats-preview">
+                        <div class="stat-badge">
+                            <i class="fa-solid fa-crown"></i>
+                            <div>
+                                <small>BEST SCORE</small>
+                                <strong id="menuHighScore">0</strong>
+                            </div>
+                        </div>
+                        <div class="stat-badge">
+                            <i class="fa-solid fa-vault"></i>
+                            <div>
+                                <small>TOTAL COINS</small>
+                                <strong id="menuTotalCoins">0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="selected-car-preview">
+                        <h3>SELECTED VEHICLE</h3>
+                        <div class="car-card-compact" id="currentCarPreview">
+                            <div class="car-preview-img-box">
+                                <canvas id="carPreviewCanvas" width="160" height="80"></canvas>
+                            </div>
+                            <div class="car-info">
+                                <h4 id="currentCarName">Velocity Red</h4>
+                                <div class="car-stat-row">
+                                    <span>Speed:</span>
+                                    <div class="stat-bar"><div id="previewSpeedBar" style="width: 60%"></div></div>
+                                </div>
+                                <div class="car-stat-row">
+                                    <span>Accel:</span>
+                                    <div class="stat-bar"><div id="previewAccelBar" style="width: 70%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-actions">
+                        <button id="startRaceBtn" class="btn btn-primary btn-large">
+                            <i class="fa-solid fa-play"></i> START RACE
+                        </button>
+                        <button id="openGarageBtn" class="btn btn-secondary">
+                            <i class="fa-solid fa-warehouse"></i> GARAGE & CARS
+                        </button>
+                    </div>
+
+                    <div class="instructions-card">
+                        <h4><i class="fa-solid fa-gamepad"></i> HOW TO PLAY</h4>
+                        <ul>
+                            <li><span class="key-badge">AUTO-DRIVE</span> : Starts at easy smooth speed, speeds up after <strong>650 Score</strong>!</li>
+                            <li><span class="key-badge">LEFT / RIGHT</span> or <span class="key-badge">A / D / ← / →</span> : Switch Lanes</li>
+                            <li><span class="key-badge">🛡️ SHIELD</span> or <span class="key-badge">E / S</span> : <strong>Invincible Shield (3 Uses)!</strong> Gari takrane par out nahi hogi!</li>
+                            <li><span class="key-badge">NITRO</span> or <span class="key-badge">SHIFT</span> : Super Boost</li>
+                            <li><span class="coin-pill">+5</span> <span class="coin-pill">+25</span> <span class="coin-pill">+100</span> : Catch coins to boost your score!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Garage Modal -->
+            <div id="garageModal" class="modal-overlay">
+                <div class="modal-card garage-card">
+                    <div class="modal-header">
+                        <h2><i class="fa-solid fa-warehouse"></i> SUPERCAR GARAGE</h2>
+                        <button id="closeGarageBtn" class="close-btn">&times;</button>
+                    </div>
+
+                    <div class="garage-coins-header">
+                        <i class="fa-solid fa-coins"></i> Your Bank: <span id="garageCoinsBank">0</span> Coins
+                    </div>
+
+                    <div id="carGrid" class="car-grid">
+                        <!-- Dynamically populated car cards -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pause Modal -->
+            <div id="pauseModal" class="modal-overlay">
+                <div class="modal-card modal-small">
+                    <h2><i class="fa-solid fa-pause"></i> RACE PAUSED</h2>
+                    <div class="menu-actions vertical">
+                        <button id="resumeBtn" class="btn btn-primary"><i class="fa-solid fa-play"></i> RESUME</button>
+                        <button id="restartPauseBtn" class="btn btn-secondary"><i class="fa-solid fa-rotate-right"></i> RESTART</button>
+                        <button id="quitMenuBtn" class="btn btn-danger"><i class="fa-solid fa-house"></i> MAIN MENU</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Over Modal -->
+            <div id="gameOverModal" class="modal-overlay">
+                <div class="modal-card game-over-card">
+                    <div class="game-over-header">
+                        <i class="fa-solid fa-flag-checkered main-icon"></i>
+                        <h2>RACE FINISHED!</h2>
+                    </div>
+
+                    <div class="result-breakdown">
+                        <div class="result-row">
+                            <span>Final Score</span>
+                            <strong id="finalScoreText">0</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Coins Collected</span>
+                            <strong id="finalCoinsText">0</strong>
+                        </div>
+                        <div class="result-row highlight-row">
+                            <span>Best High Score</span>
+                            <strong id="finalHighScoreText">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="menu-actions">
+                        <button id="playAgainBtn" class="btn btn-primary btn-large">
+                            <i class="fa-solid fa-rotate-right"></i> PLAY AGAIN
+                        </button>
+                        <button id="gameOverGarageBtn" class="btn btn-secondary">
+                            <i class="fa-solid fa-warehouse"></i> GARAGE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

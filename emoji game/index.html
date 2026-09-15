@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Emoji Match - Connect Puzzle Game</title>
+  <meta name="description" content="Connect matching emoji pairs by drawing glowing paths in this vibrant, fun, brain-teasing puzzle game!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Twemoji for 100% Guaranteed High-Res Colorful Emojis (No Black Boxes on Any Device) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Floating Emojis -->
+  <div class="bg-effects" id="bgEffects"></div>
+
+  <!-- Main Container -->
+  <div class="app-container">
+    
+    <!-- HOME SCREEN -->
+    <section id="screenHome" class="game-screen active">
+      <div class="card-frame home-card">
+        <div class="logo-container">
+          <div class="logo-badge">
+            <span class="logo-sparkle">✨</span>
+            <div class="logo-title">
+              <span class="logo-row-1">EM<span class="logo-face">😘</span>JI</span>
+              <span class="logo-row-2">MATCH</span>
+            </div>
+            <span class="logo-sparkle">✨</span>
+          </div>
+        </div>
+
+        <div class="home-preview-grid">
+          <div class="preview-cell p1">🍨</div>
+          <div class="preview-cell"></div>
+          <div class="preview-cell"></div>
+          <div class="preview-cell"></div>
+          <div class="preview-cell p1">🥶</div>
+          <div class="preview-cell p3">🥵</div>
+          <div class="preview-cell p2">😭</div>
+          <div class="preview-cell"></div>
+          <div class="preview-cell p2">🧅</div>
+          
+          <!-- Mockup glowing path lines -->
+          <svg class="preview-svg" viewBox="0 0 300 300">
+            <path d="M 50 50 L 50 150 L 150 150" class="preview-path path-cyan" />
+            <path d="M 50 250 L 250 250" class="preview-path path-yellow" />
+          </svg>
+        </div>
+
+        <div class="home-tagline">Link related emojis with glowing paths!</div>
+      </div>
+
+      <!-- Big Green Play Button -->
+      <div class="home-actions">
+        <button id="btnPlay" class="btn-play" aria-label="Play Game" title="Start Game">
+          <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+
+        <div class="secondary-btns">
+          <button id="btnLevels" class="btn-bubble btn-levels">
+            <span class="btn-icon">🗺️</span> Levels
+          </button>
+          <button id="btnHowTo" class="btn-bubble btn-howto">
+            <span class="btn-icon">❓</span> How to Play
+          </button>
+          <button id="btnSoundToggle" class="btn-bubble btn-sound" aria-label="Toggle Sound">
+            <span id="soundIcon" class="btn-icon">🔊</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEVEL SELECT SCREEN -->
+    <section id="screenLevels" class="game-screen">
+      <div class="card-frame levels-card">
+        <div class="header-bar">
+          <button id="btnLevelsBack" class="btn-icon-round" aria-label="Back">⬅️</button>
+          <h2 class="section-title">Select Level</h2>
+          <div class="stars-counter">⭐ <span id="totalStars">0</span></div>
+        </div>
+
+        <div class="levels-scroll-wrapper">
+          <div class="levels-grid" id="levelsGrid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="screenGame" class="game-screen">
+      <div class="card-frame game-card">
+        <!-- Top HUD -->
+        <div class="game-hud">
+          <div class="hud-group-left">
+            <button id="btnGameBack" class="btn-icon-round" aria-label="Home" title="Home">🏠</button>
+            <button id="btnGameSound" class="btn-icon-round" aria-label="Sound" title="Toggle Sound">🔊</button>
+          </div>
+          <div class="game-level-info">
+            <span class="game-level-title" id="gameLevelTitle">Level 1</span>
+            <span class="game-level-sub" id="gameLevelSub">3x3 Grid</span>
+          </div>
+          <div class="hud-group-right">
+            <button id="btnReset" class="btn-icon-round" title="Reset level" aria-label="Reset">🔄</button>
+            <button id="btnHint" class="btn-icon-round btn-hint" title="Get a hint" aria-label="Hint">
+              💡<span class="hint-badge" id="hintBadge">3</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pairs to Match Banner (Clear visual guide) -->
+        <div class="targets-guide-container">
+          <div class="targets-header">
+            <span class="targets-title">🎯 Pairs to Match:</span>
+            <span class="targets-subtext">Tap any pair for hint</span>
+          </div>
+          <div class="targets-list" id="targetsList">
+            <!-- Dynamically generated pair chips -->
+          </div>
+        </div>
+
+        <!-- Active Connecting Guide Prompt Toast -->
+        <div class="pair-action-toast" id="pairActionToast">
+          <span class="toast-icon">✨</span>
+          <span class="toast-text" id="pairToastText">Connect matching pairs!</span>
+        </div>
+
+        <!-- Game Board Container -->
+        <div class="board-outer-container">
+          <div class="board-wrapper" id="boardWrapper">
+            <div class="grid-board" id="gridBoard">
+              <!-- Grid cells dynamically injected -->
+            </div>
+            <!-- Canvas Overlay for Smooth Animated Line Connections -->
+            <canvas id="pipeCanvas" class="pipe-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Connection Progress Bar / Pairs Status -->
+        <div class="game-bottom-bar">
+          <div class="pairs-status">
+            <span class="status-label">Pairs Connected:</span>
+            <span class="status-count" id="pairsCount">0 / 3</span>
+          </div>
+          <div class="pairs-dots" id="pairsDots">
+            <!-- Dots dynamically injected -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO PLAY MODAL -->
+    <div id="modalHowTo" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>How to Play 🎮</h3>
+          <button class="btn-close-modal" id="btnCloseHowTo">✖</button>
+        </div>
+        <div class="modal-body">
+          <div class="howto-step">
+            <span class="step-num">1</span>
+            <p><strong>Match 1-to-1 Pairs:</strong> Connect related emojis (e.g. 🍨 Cold Face 🥶, 😭 Onion 🧅, 🧵 Needle 🪡, 📖 Pencil ✏️, 👄 Lipstick 💄).</p>
+          </div>
+          <div class="howto-step">
+            <span class="step-num">2</span>
+            <p><strong>Drag Paths:</strong> Drag from one emoji through empty adjacent cells to reach its match.</p>
+          </div>
+          <div class="howto-step">
+            <span class="step-num">3</span>
+            <p><strong>No Crossing Lines:</strong> Connect all pairs on the board without overlapping paths to win!</p>
+          </div>
+        </div>
+        <button class="btn-action-big" id="btnGotIt">Got It! 🚀</button>
+      </div>
+    </div>
+
+    <!-- LEVEL COMPLETE MODAL -->
+    <div id="modalVictory" class="modal-overlay">
+      <div class="modal-card victory-card">
+        <div class="confetti-container" id="confettiContainer"></div>
+        <div class="victory-header">
+          <div class="victory-trophy">🎉</div>
+          <h2 class="victory-title">FANTASTIC!</h2>
+          <p class="victory-sub" id="victoryLevelText">Level 1 Solved</p>
+        </div>
+
+        <div class="stars-awarded" id="starsAwarded">
+          <span class="star star-1">⭐</span>
+          <span class="star star-2">⭐</span>
+          <span class="star star-3">⭐</span>
+        </div>
+
+        <div class="victory-actions">
+          <button id="btnNextLevel" class="btn-action-big btn-next">
+            Next Level ⏩
+          </button>
+          <div class="victory-secondary-actions">
+            <button id="btnReplay" class="btn-bubble btn-replay">🔄 Replay</button>
+            <button id="btnSelectLevelFromWin" class="btn-bubble btn-menu">🗺️ Levels</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

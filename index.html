@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a2234;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header-main {
+            background-color: #264B8D !important;
+            height: 90px !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-img {
+            height: 85px;
+            object-fit: contain;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 18px;
+            border-radius: 25px;
+        }
+
+        .top-nav a:hover,
+        .top-nav a.active {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-icons i,
+        .nav-icons a {
+            color: #fff;
+            font-size: 17px;
+            cursor: pointer;
+            background-color: rgb(241, 31, 31);
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-icons i:hover,
+        .nav-icons a:hover {
+            background-color: rgb(202, 4, 4);
+            transform: scale(1.05);
+        }
+
+        .search-bar-container {
+            flex: 1;
+            max-width: 480px;
+            margin: 0 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            color: #ff4b2b;
+            font-size: 15px;
+            pointer-events: none;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .search-bar-container:focus-within .search-icon {
+            transform: scale(1.15);
+        }
+
+        #searchInput {
+            width: 100%;
+            height: 42px;
+            padding: 0 20px 0 44px;
+            border-radius: 25px;
+            border: 2px solid transparent;
+            outline: none;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 14.5px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #searchInput::placeholder {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        #searchInput:focus {
+            background: #ffffff;
+            border-color: #ff4b2b;
+            box-shadow: 0 4px 20px rgba(255, 75, 43, 0.35);
+        }
+
+        /* Side Navigation */
+        .side-nav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #111827;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .side-nav a {
+            padding: 14px 24px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .side-nav a:hover,
+        .side-nav a.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid #ff4b2b;
+        }
+
+        .side-nav .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #cbd5e1;
+        }
+
+        /* Hero Section (Only for title, subtitle and category filters) */
+        .hero-section {
+            text-align: center;
+            padding: 28px 20px 18px;
+            background-color: #1a2234;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.95)), url('image.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* Games Section (Clean White Background) */
+        .games-section {
+            background-color: #ffffff;
+            padding: 40px 20px 70px;
+            flex: 1;
+        }
+
+        .hero-title {
+            font-size: 40px;
+            font-weight: 900;
+            color: #ff4b2b;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 1.2px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: #e2e8f0;
+            max-width: 600px;
+            margin: 0 auto 15px;
+            line-height: 1.5;
+        }
+
+        /* Category Filters */
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 20px auto 10px;
+            flex-wrap: wrap;
+            max-width: 950px;
+        }
+
+        .filter-btn {
+            min-width: 125px;
+            height: 36px;
+            padding: 6px 28px;
+            border: none;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13.5px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            border-radius: 30px;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            opacity: 1;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.45);
+            color: white;
+        }
+
+        /* Games Grid Container - Exactly 4 Games Per Line */
+        .games-container-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: left;
+        }
+
+        /* Compact Game Card Tile */
+        .game-card {
+            background: #1e293b;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .game-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 75, 43, 0.7);
+            box-shadow: 0 14px 30px rgba(255, 75, 43, 0.25), 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-media {
+            height: 155px;
+            position: relative;
+            overflow: hidden;
+            background: #0f172a;
+            display: block;
+            padding: 0;
+        }
+
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .card-media img {
+            transform: scale(1.05);
+        }
+
+        .card-canvas-cover {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .card-canvas-cover i {
+            font-size: 44px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .card-canvas-cover i {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            padding: 3px 9px;
+            border-radius: 14px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .card-rating {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 3px 8px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fbbf24;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            z-index: 2;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .card-body {
+            padding: 12px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-category {
+            font-size: 11px;
+            font-weight: 700;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .btn-play {
+            width: 100%;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 75, 43, 0.3);
+        }
+
+        .btn-play:hover {
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Fullscreen Game Player Overlay */
+        .fullscreen-player-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 999999;
+            display: none;
+            flex-direction: column;
+        }
+
+        .fullscreen-player-overlay.active {
+            display: flex;
+        }
+
+        .fullscreen-header-bar {
+            height: 48px;
+            background: #0f172a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .fullscreen-title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .fullscreen-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fs-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .fs-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .fs-btn-close {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .fs-btn-close:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .fullscreen-iframe-wrap {
+            flex: 1;
+            width: 100%;
+            height: calc(100vh - 48px);
+            background: #000;
+            position: relative;
+        }
+
+        .fullscreen-iframe-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Footer */
+        .footer-main {
+            background-color: #0b101a;
+            color: #ccc;
+            padding: 50px 20px 20px;
+            font-family: 'Outfit', sans-serif;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 35px;
+            height: 3px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border-radius: 2px;
+        }
+
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 12px;
+        }
+
+        .footer-col p {
+            line-height: 1.6;
+            font-size: 13.5px;
+            color: #94a3b8;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+            font-size: 13.5px;
+        }
+
+        .footer-links a:hover {
+            color: #ff4b2b;
+            padding-left: 5px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .footer-socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: #fff;
+            transition: 0.3s;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-socials a:hover {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-main {
+                height: 75px !important;
+                padding: 10px 20px;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+            }
+
+            .desktop-only {
+                display: none !important;
+            }
+
+            .top-nav {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-section {
+                padding: 25px 12px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .card-media {
+                height: 135px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Side Navigation Menu -->
+    <div id="sideNav" class="side-nav">
+        <a href="javascript:void(0)" class="close-btn" id="closeNav">&times;</a>
+        <a href="index.html" class="active"><i class="fas fa-home" style="margin-right: 12px;"></i>Home</a>
+        <a href="about.html"><i class="fas fa-info-circle" style="margin-right: 12px;"></i>About Us</a>
+        <a href="faq.html"><i class="fas fa-question-circle" style="margin-right: 12px;"></i>FAQ</a>
+        <a href="contact.html"><i class="fas fa-envelope" style="margin-right: 12px;"></i>Contact Support</a>
+    </div>
+
+    <!-- Header -->
+    <header class="header-main">
+        <div class="logo-container" style="display: flex; align-items: center; gap: 15px;">
+            <i class="fas fa-bars mobile-menu-btn"
+                style="display: none; font-size: 24px; color: white; cursor: pointer;" id="menuToggle"></i>
+            <a href="index.html">
+                <img src="logo.png" alt="Games Website Logo" class="logo-img">
+            </a>
+        </div>
+
+        <div class="search-bar-container desktop-only">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search for games..." autocomplete="off">
+        </div>
+
+        <div class="nav-icons desktop-only">
+            <a href="Ludo/index.html" title="Play Ludo"><i class="fas fa-gamepad"></i></a>
+            <i class="fas fa-bell" title="Notifications" onclick="alert('All 14 games are ready to play!')"></i>
+        </div>
+    </header>
+
+    <!-- Hero Section containing the Games in 4 per row -->
+    <section class="hero-section">
+        <h1 class="hero-title" id="heroTitle">our games</h1>
+        <p class="hero-subtitle">All of our awesome html5 games in one place.</p>
+
+        <!-- Category Filters -->
+        <div class="filters-container">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="puzzle">Puzzle</button>
+            <button class="filter-btn" data-filter="arcade">Arcade</button>
+            <button class="filter-btn" data-filter="racing">Racing</button>
+            <button class="filter-btn" data-filter="board">Board</button>
+            <button class="filter-btn" data-filter="casual">Casual</button>
+        </div>
+    </section>
+
+    <!-- Games Grid Section (Clean solid background without hero image) -->
+    <section class="games-section">
+        <!-- 12 Compact Games Grid (4 per row on Desktop) -->
+        <div class="games-container-wrapper">
+            <div class="games-grid" id="mainGamesContainer">
+                <!-- 1. Ludo King -->
+                <a href="Ludo/index.html" class="game-card" data-category="board" data-title="ludo king">
+                    <div class="card-media" style="background: linear-gradient(135deg, #b91c1c, #ef4444);">
+                        <img src="Ludo/image.png" alt="Ludo King" loading="lazy">
+                        <span class="card-badge" style="background: #ff416c;">Board</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Board & Classic</span>
+                        <h3 class="card-title">Ludo King</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2. Wood Screw Puzzle -->
+                <a href="Wood Screw/index.html" class="game-card" data-category="puzzle" data-title="wood screw puzzle">
+                    <div class="card-media" style="background: linear-gradient(135deg, #78350f, #b45309);">
+                        <img src="wood.png" alt="Wood Screw Puzzle" loading="lazy">
+                        <span class="card-badge" style="background: #d97706;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Physics</span>
+                        <h3 class="card-title">Wood Screw Puzzle</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 3. Word Search Classic -->
+                <a href="wordSearch/index.html" class="game-card" data-category="puzzle"
+                    data-title="word search classic puzzle letters words">
+                    <div class="card-media" style="background: linear-gradient(135deg, #0284c7, #0369a1);">
+                        <img src="wordsearch.svg" alt="Word Search Classic" loading="lazy">
+                        <span class="card-badge" style="background: #0284c7;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Words</span>
+                        <h3 class="card-title">Word Search Classic</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 4. Bubble Pop Neon -->
+                <a href="bubble game/index.html" class="game-card" data-category="arcade" data-title="bubble pop neon">
+                    <div class="card-media" style="background: linear-gradient(135deg, #0e7490, #06b6d4);">
+                        <img src="bubble.png" alt="Bubble Pop Neon" loading="lazy">
+                        <span class="card-badge" style="background: #06b6d4;">Arcade</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Arcade & Action</span>
+                        <h3 class="card-title">Bubble Pop Neon</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 5. Cake Sort 3D -->
+                <a href="cake game/index.html" class="game-card" data-category="puzzle" data-title="cake sort 3d">
+                    <div class="card-media" style="background: linear-gradient(135deg, #be185d, #ec4899);">
+                        <img src="cake.png" alt="Cake Sort 3D" loading="lazy">
+                        <span class="card-badge" style="background: #ec4899;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Casual</span>
+                        <h3 class="card-title">Cake Sort 3D</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 6. Coin Rush Speedway -->
+                <a href="car game/index.html" class="game-card" data-category="racing"
+                    data-title="coin rush speedway car game">
+                    <div class="card-media" style="background: linear-gradient(135deg, #b91c1c, #f97316);">
+                        <img src="car.png" alt="Coin Rush Speedway" loading="lazy">
+                        <span class="card-badge" style="background: #ef4444;">Racing</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Racing & Speed</span>
+                        <h3 class="card-title">Coin Rush Speedway</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 7. Coloring Book Master -->
+                <a href="color game/index.html" class="game-card" data-category="casual"
+                    data-title="coloring book master color game">
+                    <div class="card-media" style="background: linear-gradient(135deg, #047857, #10b981);">
+                        <img src="color.png" alt="Coloring Book" loading="lazy">
+                        <span class="card-badge" style="background: #10b981;">Casual</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Casual & Creative</span>
+                        <h3 class="card-title">Coloring Book</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 8. Water Sort Liquid Puzzle -->
+                <a href="cups water game/index.html" class="game-card" data-category="puzzle"
+                    data-title="water sort liquid puzzle cups">
+                    <div class="card-media" style="background: linear-gradient(135deg, #1d4ed8, #06b6d4);">
+                        <img src="tube.png" alt="Water Sort Puzzle" loading="lazy">
+                        <span class="card-badge" style="background: #3b82f6;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Logic</span>
+                        <h3 class="card-title">Water Sort Puzzle</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 9. Merge Cafe Restaurant -->
+                <a href="customer game/index.html" class="game-card" data-category="puzzle"
+                    data-title="merge cafe restaurant customer game">
+                    <div class="card-media" style="background: linear-gradient(135deg, #6d28d9, #8b5cf6);">
+                        <img src="merge.png" alt="Merge Cafe" loading="lazy">
+                        <span class="card-badge" style="background: #8b5cf6;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Tycoon</span>
+                        <h3 class="card-title">Merge Cafe</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 10. Diamond & Gem Merge -->
+                <a href="diamond game/index.html" class="game-card" data-category="puzzle"
+                    data-title="diamond gem merge crystal">
+                    <div class="card-media" style="background: linear-gradient(135deg, #4338ca, #6366f1);">
+                        <img src="stones.png" alt="Diamond Merge" loading="lazy">
+                        <span class="card-badge" style="background: #6366f1;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Physics</span>
+                        <h3 class="card-title">Diamond Merge</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 11. Eye Pin Hit -->
+                <a href="eye game/index.html" class="game-card" data-category="arcade"
+                    data-title="eye pin hit target arrow">
+                    <div class="card-media" style="background: linear-gradient(135deg, #be123c, #fb7185);">
+                        <img src="eye.png" alt="Eye Pin Hit" loading="lazy">
+                        <span class="card-badge" style="background: #f43f5e;">Arcade</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Arcade & Action</span>
+                        <h3 class="card-title">Eye Pin Hit</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 12. Toilet Rush -->
+                <a href="Toilet Game/index.html" class="game-card" data-category="puzzle"
+                    data-title="toilet rush puzzle draw line barbara kent rush">
+                    <div class="card-media" style="background: linear-gradient(135deg, #0284c7, #0369a1);">
+                        <img src="toilet_rush.svg" alt="Toilet Rush" loading="lazy">
+                        <span class="card-badge" style="background: #0284c7;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Rush</span>
+                        <h3 class="card-title">Toilet Rush</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 13. Emoji Match -->
+                <a href="emoji game/index.html" class="game-card" data-category="puzzle"
+                    data-title="emoji match connect puzzle pair brain logic smile">
+                    <div class="card-media" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">
+                        <img src="emoji_match.svg" alt="Emoji Match" loading="lazy">
+                        <span class="card-badge" style="background: #7c3aed;">Puzzle</span>
+                        <span class="card-rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">Puzzle & Connect</span>
+                        <h3 class="card-title">Emoji Match</h3>
+                        <div class="card-actions">
+                            <span class="btn-play"><i class="fas fa-play"></i> Play</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fullscreen Game Player Overlay (Opens 100% Fullscreen on Click) -->
+    <div id="fullscreenGameOverlay" class="fullscreen-player-overlay">
+        <div class="fullscreen-header-bar">
+            <div class="fullscreen-title-area">
+                <i class="fas fa-gamepad" style="color: #ff4b2b;"></i>
+                <span id="fsGameTitle">Game Name</span>
+            </div>
+            <div class="fullscreen-controls">
+                <button class="fs-btn" id="fsRestartBtn" title="Restart Game"><i class="fas fa-rotate-right"></i>
+                    Restart</button>
+                <button class="fs-btn" id="fsDeviceFullscreenBtn" title="Toggle Fullscreen"><i
+                        class="fas fa-expand"></i> Fullscreen</button>
+                <button class="fs-btn fs-btn-close" id="fsCloseBtn" title="Close Game"><i class="fas fa-xmark"></i> Exit
+                    Game</button>
+            </div>
+        </div>
+        <div class="fullscreen-iframe-wrap" id="fullscreenWrap">
+            <iframe id="fullscreenIframe" src="" allowfullscreen allow="autoplay"></iframe>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col">
+                <img src="logo.png" alt="Logo" class="footer-logo">
+                <p>Your ultimate destination for HTML5 games. Play 14 high-quality games instantly on your desktop or
+                    mobile device.</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="javascript:void(0)" onclick="filterGames('puzzle')">Puzzle Games</a></li>
+                    <li><a href="javascript:void(0)" onclick="filterGames('arcade')">Action & Arcade</a></li>
+                    <li><a href="javascript:void(0)" onclick="filterGames('racing')">Racing</a></li>
+                    <li><a href="javascript:void(0)" onclick="filterGames('board')">Board & Classic</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to receive the latest updates and exclusive early access to new games.
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 HTML5 Games. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Filter & Fullscreen Player Scripts -->
+    <script>
+        let currentGamePath = '';
+
+        function openFullScreenGame(gamePath, gameTitle) {
+            currentGamePath = gamePath;
+            const overlay = document.getElementById('fullscreenGameOverlay');
+            const iframe = document.getElementById('fullscreenIframe');
+            const titleEl = document.getElementById('fsGameTitle');
+
+            if (titleEl) titleEl.textContent = gameTitle;
+            if (iframe) iframe.src = gamePath;
+            if (overlay) overlay.classList.add('active');
+
+            document.body.style.overflow = 'hidden';
+
+            // Request device fullscreen if possible
+            const overlayEl = document.getElementById('fullscreenGameOverlay');
+            if (overlayEl.requestFullscreen) {
+                overlayEl.requestFullscreen().catch(() => { });
+            } else if (overlayEl.webkitRequestFullscreen) {
+                overlayEl.webkitRequestFullscreen();
+            }
+        }
+
+        function closeFullScreenGame() {
+            const overlay = document.getElementById('fullscreenGameOverlay');
+            const iframe = document.getElementById('fullscreenIframe');
+
+            if (overlay) overlay.classList.remove('active');
+            if (iframe) iframe.src = '';
+            document.body.style.overflow = 'auto';
+
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => { });
+            }
+        }
+
+        function filterGames(category) {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'all' || cardCat === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fullscreen player controls
+            const closeBtn = document.getElementById('fsCloseBtn');
+            if (closeBtn) closeBtn.addEventListener('click', closeFullScreenGame);
+
+            const restartBtn = document.getElementById('fsRestartBtn');
+            if (restartBtn) {
+                restartBtn.addEventListener('click', function () {
+                    const iframe = document.getElementById('fullscreenIframe');
+                    if (iframe && currentGamePath) {
+                        iframe.src = currentGamePath;
+                    }
+                });
+            }
+
+            const deviceFsBtn = document.getElementById('fsDeviceFullscreenBtn');
+            if (deviceFsBtn) {
+                deviceFsBtn.addEventListener('click', function () {
+                    const overlayEl = document.getElementById('fullscreenGameOverlay');
+                    if (!document.fullscreenElement) {
+                        if (overlayEl.requestFullscreen) overlayEl.requestFullscreen();
+                    } else {
+                        if (document.exitFullscreen) document.exitFullscreen();
+                    }
+                });
+            }
+
+            window.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeFullScreenGame();
+                }
+            });
+
+            // Category filter click
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const filter = this.getAttribute('data-filter');
+                    filterGames(filter);
+                });
+            });
+
+            // Search input filter
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function (e) {
+                    const query = e.target.value.toLowerCase().trim();
+                    const cards = document.querySelectorAll('.game-card');
+
+                    cards.forEach(card => {
+                        const title = card.getAttribute('data-title') || '';
+                        if (title.includes(query)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Side nav
+            const menuToggle = document.getElementById('menuToggle');
+            const closeNav = document.getElementById('closeNav');
+            const sideNav = document.getElementById('sideNav');
+
+            if (menuToggle && sideNav) {
+                menuToggle.addEventListener('click', function () {
+                    sideNav.style.width = "250px";
+                });
+            }
+
+            if (closeNav && sideNav) {
+                closeNav.addEventListener('click', function () {
+                    sideNav.style.width = "0";
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

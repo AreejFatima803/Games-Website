@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="doorGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="doorGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f472b6" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bgGrad)" />
+
+  <!-- Tile floor pattern -->
+  <path d="M0 310 L400 310 L400 400 L0 400 Z" fill="#1e293b" opacity="0.85" />
+  <path d="M0 310 L60 400 M100 310 L160 400 M200 310 L260 400 M300 310 L360 400 M400 310 L400 400" stroke="#334155" stroke-width="3" />
+  <line x1="0" y1="355" x2="400" y2="355" stroke="#334155" stroke-width="3" />
+
+  <!-- Boy Door (Blue) -->
+  <g transform="translate(60, 90)">
+    <rect x="0" y="0" width="110" height="190" rx="16" fill="#0f172a" stroke="#38bdf8" stroke-width="4" />
+    <rect x="10" y="12" width="90" height="166" rx="10" fill="url(#doorGrad1)" />
+    <!-- Boy Sign Badge -->
+    <rect x="25" y="28" width="60" height="65" rx="8" fill="#ffffff" />
+    <!-- Boy Figure -->
+    <circle cx="55" cy="46" r="8" fill="#0284c7" />
+    <path d="M46 58 L64 58 L62 76 L57 76 L57 88 L53 88 L53 76 L48 76 Z" fill="#0284c7" />
+    <!-- Door handle -->
+    <circle cx="24" cy="115" r="5" fill="#fde047" />
+  </g>
+
+  <!-- Girl Door (Pink) -->
+  <g transform="translate(230, 90)">
+    <rect x="0" y="0" width="110" height="190" rx="16" fill="#0f172a" stroke="#f472b6" stroke-width="4" />
+    <rect x="10" y="12" width="90" height="166" rx="10" fill="url(#doorGrad2)" />
+    <!-- Girl Sign Badge -->
+    <rect x="25" y="28" width="60" height="65" rx="8" fill="#ffffff" />
+    <!-- Girl Figure -->
+    <circle cx="55" cy="46" r="8" fill="#db2777" />
+    <path d="M48 58 L62 58 L68 76 L57 76 L57 88 L53 88 L53 76 L42 76 Z" fill="#db2777" />
+    <!-- Door handle -->
+    <circle cx="86" cy="115" r="5" fill="#fde047" />
+  </g>
+
+  <!-- Glowing Connecting Rush Paths -->
+  <path d="M115 350 C 130 330, 160 330, 180 350 C 200 370, 240 370, 285 330" fill="none" stroke="#fde047" stroke-width="8" stroke-dasharray="10 8" filter="url(#glow)" />
+
+  <!-- Toilet Paper Floating Fun Icon -->
+  <g transform="translate(165, 30)">
+    <ellipse cx="35" cy="35" rx="28" ry="18" fill="#f8fafc" />
+    <ellipse cx="35" cy="35" rx="14" ry="9" fill="#94a3b8" />
+    <path d="M7 35 Q 35 70 55 90 L 70 80 Q 45 60 63 35 Z" fill="#f1f5f9" opacity="0.95" />
+    <!-- Crown / Fun Stars -->
+    <path d="M35 5 L40 18 L53 18 L43 26 L47 38 L35 30 L23 38 L27 26 L17 18 L30 18 Z" fill="url(#goldGrad)" />
+  </g>
+
+  <!-- Title Badge -->
+  <g transform="translate(200, 360)">
+    <rect x="-140" y="-22" width="280" height="44" rx="22" fill="#0f172a" stroke="#f59e0b" stroke-width="3" />
+    <text x="0" y="7" text-anchor="middle" font-family="'Outfit', sans-serif" font-size="20" font-weight="900" fill="#ffffff" letter-spacing="1.5">TOILET RUSH</text>
+  </g>
+</svg>

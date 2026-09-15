@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Games Website</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+        }
+
+        /* Shared Styles for Navbar and Footer */
+        .top-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 20px;
+            border-radius: 25px;
+        }
+
+        .top-nav a:hover,
+        .top-nav a.active {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-icons i {
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: rgb(241, 31, 31);
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .nav-icons i:hover {
+            background-color: rgb(202, 4, 4);
+        }
+
+        .logo-img {
+            height: 95px;
+            object-fit: contain;
+        }
+
+        .header-main {
+            background-color: #264B8D !important;
+            height: 100px !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .footer-main {
+            background-color: #0b101a;
+            color: #ccc;
+            padding: 80px 20px 20px;
+            font-family: 'Inter', sans-serif;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h3 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border-radius: 2px;
+        }
+
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col p {
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: #ff4b2b;
+            padding-left: 8px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: #fff;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-socials a:hover {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* New About Page Styles */
+        .about-hero {
+            padding: 120px 20px 80px;
+            background-color: #264B8D;
+            background-image: linear-gradient(rgba(38, 75, 141, 0.75), rgba(38, 75, 141, 0.75)), url('image.png');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            color: white;
+        }
+
+        .about-hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        .about-hero h1 span {
+            color: #ff4b2b;
+        }
+
+        .about-hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .about-block {
+            padding: 90px 20px;
+            background-color: #fff;
+        }
+
+        .about-block.alt-bg {
+            background-color: #f8f9fa;
+        }
+
+        .about-block-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .about-block-container.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .about-content {
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .about-content h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1e3c72;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .about-content h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border-radius: 2px;
+        }
+
+        .about-content p {
+            font-size: 17px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .about-visual {
+            flex: 1;
+            min-width: 320px;
+            position: relative;
+        }
+
+        .about-visual img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .about-visual img:hover {
+            transform: scale(1.02);
+        }
+
+        .mission-vision-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mv-card {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-bottom: 5px solid #ff4b2b;
+            transition: transform 0.3s ease;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .mv-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #264B8D 0%, #1e3c72 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 20px rgba(38, 75, 141, 0.3);
+        }
+
+        .mv-card h3 {
+            font-size: 28px;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .mv-card p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .offer-section-dark {
+            padding: 100px 20px;
+            background-color: #0b101a;
+            background-image: radial-gradient(circle at top right, #1e3c72 0%, #0b101a 60%);
+            color: white;
+        }
+
+        .offer-section-dark .about-content h2 {
+            color: #fff;
+        }
+
+        .offer-section-dark .about-content p {
+            color: #ccc;
+        }
+
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 50px auto 0;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .offer-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.8s ease, translate 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+        }
+
+        .offer-item.slide-left {
+            translate: -100px 0;
+        }
+
+        .offer-item.slide-right {
+            translate: 100px 0;
+        }
+
+        .offer-item.in-view {
+            opacity: 1;
+            translate: 0 0;
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        .offer-item.in-view:nth-child(even) {
+            animation-delay: 2s;
+        }
+
+        .offer-item.in-view:hover {
+            animation-play-state: paused;
+            transform: translateY(-10px) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 75, 43, 0.4);
+        }
+
+        .offer-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 75, 43, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .offer-item:hover .offer-icon-wrapper {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
+        }
+
+        .offer-icon-wrapper i {
+            font-size: 32px;
+            color: #ff4b2b;
+            transition: all 0.3s ease;
+        }
+
+        .offer-item:hover .offer-icon-wrapper i {
+            color: #fff;
+        }
+
+        .offer-item h4 {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .offer-item p {
+            font-size: 15px;
+            color: #bbb;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .about-cta-section {
+            padding: 100px 20px;
+            background-color: #0b101a;
+            text-align: center;
+            color: white;
+            background-image: radial-gradient(circle at center, #1e3c72 0%, #0b101a 70%);
+        }
+
+        .about-cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-cta-container h2 {
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-cta-container h2 span {
+            color: #ff4b2b;
+        }
+
+        .about-cta-container p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-action-btn {
+            padding: 15px 45px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 40px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 75, 43, 0.6);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header-main {
+                flex-direction: row;
+                flex-wrap: wrap;
+                height: auto !important;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+            }
+
+            .desktop-only {
+                display: none !important;
+            }
+
+            .top-nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .top-nav.active {
+                display: flex;
+            }
+
+            .top-nav a {
+                padding: 12px;
+                width: 100%;
+            }
+
+            .about-hero {
+                padding: 80px 15px 50px;
+            }
+
+            .about-hero h1 {
+                font-size: 32px;
+            }
+
+            .about-block-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .about-content h2::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .mv-card {
+                padding: 30px 20px;
+            }
+
+            .offer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-item {
+                padding: 30px 20px;
+            }
+
+            .about-cta-container h2 {
+                font-size: 28px;
+            }
+
+            .cta-section {
+                padding: 50px 15px;
+            }
+        }
+
+        /* Why Choose Us Section */
+        .why-choose-us {
+            padding: 100px 20px;
+            background-color: #050b14;
+            background-image: linear-gradient(rgba(5, 11, 20, 0.75), rgba(5, 11, 20, 0.75)), url('image2.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .why-title {
+            font-size: 40px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .why-title span {
+            color: #ff4b2b;
+        }
+
+        .why-subtitle {
+            font-size: 18px;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .why-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .why-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 60px 30px 40px;
+            position: relative;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: opacity 0.8s ease, translate 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        .why-card.slide-left {
+            translate: -100px 0;
+        }
+
+        .why-card.slide-right {
+            translate: 100px 0;
+        }
+
+        .why-card.in-view {
+            opacity: 1;
+            translate: 0 0;
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        .why-card.in-view:nth-child(even) {
+            animation-delay: 2s;
+        }
+
+        .why-card.in-view:hover {
+            animation-play-state: paused;
+            transform: translateY(-10px) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 75, 43, 0.4);
+        }
+
+        .card-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            color: #bbb;
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .why-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 30px;
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
+        }
+
+        .why-icon i {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .top-icon {
+            top: -30px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-main">
+        <div class="logo-container" style="display: flex; align-items: center; gap: 15px;">
+            <a href="index.html"><img src="logo.png" alt="Logo" class="logo-img"></a>
+        </div>
+        <i class="fas fa-bars mobile-menu-btn" style="display: none; font-size: 28px; color: white; cursor: pointer;"
+            onclick="document.getElementById('mobileNavListAbout').classList.toggle('active')"></i>
+        <div class="top-nav" id="mobileNavListAbout">
+            <a href="index.html">Home</a>
+            <a href="about.html" class="active">About</a>
+            <a href="faq.html">FAQ</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-icons desktop-only">
+            <i class="fas fa-bell"></i>
+            <i class="fas fa-user"></i>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="about-hero">
+        <h1>Discover <span>Our Story</span></h1>
+        <p>Learn more about the team, the vision, and the passion that drives us to deliver the best HTML5 gaming
+            experience.</p>
+    </section>
+
+    <!-- Who We Are -->
+    <section class="about-block">
+        <div class="about-block-container">
+            <div class="about-content">
+                <h2>Who We Are</h2>
+                <p>We are a dedicated group of gamers, developers, and designers united by a single goal: making
+                    high-quality gaming accessible to everyone, everywhere.</p>
+                <p>Founded with the idea that fun shouldn't be locked behind downloads or paywalls, our platform brings
+                    thousands of diverse HTML5 games straight to your browser. Whether you are on a smartphone, tablet,
+                    or desktop, we ensure a seamless and exciting experience.</p>
+            </div>
+            <div class="about-visual">
+                <img src="remord.png" alt="Who We Are">
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="about-block alt-bg">
+        <div class="mission-vision-wrapper">
+            <div class="mv-card">
+                <div class="mv-icon"><i class="fas fa-bullseye"></i></div>
+                <h3>Our Mission</h3>
+                <p>To eliminate barriers in the gaming world by providing a fast, secure, and completely free platform
+                    where players of all skill levels can discover their next favorite game instantly.</p>
+            </div>
+            <div class="mv-card">
+                <div class="mv-icon"><i class="fas fa-eye"></i></div>
+                <h3>Our Vision</h3>
+                <p>To become the leading global hub for browser-based gaming, constantly innovating and pushing the
+                    limits of web technology to deliver console-quality experiences right in your browser.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Offer -->
+    <section class="offer-section-dark">
+        <div class="about-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h2 style="display: inline-block;">What We Offer</h2>
+            <p style="margin-top: 15px;">We provide a comprehensive ecosystem designed around player satisfaction and
+                continuous entertainment.</p>
+        </div>
+        <div class="offer-grid">
+            <div class="offer-item slide-left">
+                <div class="offer-icon-wrapper"><i class="fas fa-gamepad"></i></div>
+                <h4>Massive Game Library</h4>
+                <p>Thousands of hand-picked titles across multiple genres, from action and adventure to puzzles and
+                    strategy.</p>
+            </div>
+            <div class="offer-item slide-right">
+                <div class="offer-icon-wrapper"><i class="fas fa-mobile-alt"></i></div>
+                <h4>Cross-Platform Play</h4>
+                <p>Start a game on your PC and continue on your mobile device. Our games adapt beautifully to any screen
+                    size.</p>
+            </div>
+            <div class="offer-item slide-left">
+                <div class="offer-icon-wrapper"><i class="fas fa-users"></i></div>
+                <h4>Active Community</h4>
+                <p>Join leaderboards, unlock achievements, and connect with fellow gamers from around the globe.</p>
+            </div>
+            <div class="offer-item slide-right">
+                <div class="offer-icon-wrapper"><i class="fas fa-bolt"></i></div>
+                <h4>Zero Loading Time</h4>
+                <p>No downloads, no installations, and no waiting. Just click and play instantly with optimized HTML5
+                    technology.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <div class="why-header">
+            <h2 class="why-title">Why <span>Choose Us</span></h2>
+            <p class="why-subtitle">Experience the next generation of online gaming.</p>
+        </div>
+        <div class="why-grid">
+            <!-- Card 1 -->
+            <div class="why-card slide-left">
+                <div class="why-icon top-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="card-number">01</h3>
+                <h4 class="card-title">Massive Community</h4>
+                <p class="card-text">Join thousands of daily active players. Compete on leaderboards and make new
+                    friends in our vibrant gaming community.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="why-card slide-right">
+                <div class="why-icon top-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="card-number">02</h3>
+                <h4 class="card-title">Instant Play</h4>
+                <p class="card-text">No downloads, no installations. Jump straight into the action directly from your
+                    web browser anytime, anywhere.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="why-card slide-left">
+                <div class="why-icon top-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="card-number">03</h3>
+                <h4 class="card-title">Fresh Content</h4>
+                <p class="card-text">We constantly update our library with innovative and exciting new games so you
+                    never run out of fun challenges.</p>
+            </div>
+            <!-- Card 4 -->
+            <div class="why-card slide-right">
+                <div class="why-icon top-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="card-number">04</h3>
+                <h4 class="card-title">Secure & Safe</h4>
+                <p class="card-text">Your privacy is our priority. Enjoy a secure gaming environment free from malicious
+                    software and intrusive tracking.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">Play Free Games <span style="color: #FF4B2B;"> Right Now!</span></h2>
+            <p class="cta-subtitle">Explore our collection of fun and engaging HTML5 games. Play instantly in your browser on desktop or mobile with no downloads required.</p>
+            <a href="index.html" class="cta-btn" style="text-decoration: none; display: inline-block;">Play Games Now</a>
+        </div>
+    </section>
+
+    <footer class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col">
+                <img src="logo.png" alt="Logo" class="footer-logo">
+                <p>Your ultimate destination for HTML5 games. Play thousands of high-quality games instantly on your
+                    desktop or mobile device.</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="index.html">All Games</a></li>
+                    <li><a href="play.html">Play</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Puzzle Games</a></li>
+                    <li><a href="#">Action & Arcade</a></li>
+                    <li><a href="#">Racing</a></li>
+                    <li><a href="#">Sports</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to receive the latest updates and exclusive early access to new games.
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 HTML5 Games. All rights reserved.
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        entry.target.classList.remove('in-view');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.why-card, .offer-item').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Diamond & Gem Merge - Crystal Drop Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Matter.js Physics Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+</head>
+<body>
+  <div class="game-wrapper">
+    
+    <!-- Left Sidebar: Evolution Guide & Stats -->
+    <aside class="sidebar side-left">
+      <div class="glass-panel evolution-panel">
+        <h3 class="panel-title"><span>✦</span> GEM EVOLUTION <span>✦</span></h3>
+        <div class="evolution-chain" id="evolutionChain">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center: Main Game Board -->
+    <main class="game-arena-container">
+      
+      <!-- Top HUD -->
+      <header class="hud-header">
+        <div class="score-card main-score">
+          <span class="score-label">SCORE</span>
+          <span class="score-value" id="currentScore">0</span>
+        </div>
+        
+        <div class="score-card chance-score-card" id="hudChanceCard" title="1 Chance Available on Danger">
+          <span class="score-label">CHANCE</span>
+          <span class="score-value chance-val active" id="hudChanceValue">⚡ 1</span>
+        </div>
+
+        <div class="hud-center-badge">
+          <div class="combo-badge" id="comboBadge">
+            <span class="combo-text">COMBO</span>
+            <span class="combo-multiplier" id="comboMultiplier">x2</span>
+          </div>
+        </div>
+
+        <div class="score-card best-score">
+          <span class="score-label">BEST</span>
+          <span class="score-value" id="bestScore">0</span>
+        </div>
+      </header>
+
+      <!-- Game Stage -->
+      <div class="arena-frame" id="arenaFrame">
+        <!-- Stone Pillars Graphic / Background is styled in CSS -->
+        
+        <!-- Danger / Overflow Line -->
+        <div class="danger-line" id="dangerLine">
+          <span class="danger-glow"></span>
+          <span class="danger-label">DANGER LIMIT</span>
+        </div>
+
+        <!-- Canvas for Physics & Rendering -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Aim Dropper Pointer -->
+        <div class="dropper-pointer" id="dropperPointer">
+          <div class="dropper-arrow">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22L3 11h6V2h6v9h6z"/>
+            </svg>
+          </div>
+          <div class="preview-gem-slot" id="dropperGemPreview"></div>
+          <div class="aim-guide-line"></div>
+        </div>
+
+        <!-- Floating Particles & Combo Canvas overlay -->
+        <canvas id="fxCanvas"></canvas>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <footer class="hud-controls">
+        <button class="btn-icon" id="btnSound" title="Toggle Sound" aria-label="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+        </button>
+        <button class="btn-icon" id="btnInfo" title="Gem Evolution Guide" aria-label="Evolution Guide">
+          <span>💎</span>
+        </button>
+        <button class="btn-action" id="btnRestart" title="Restart Game">
+          <span>🔄 NEW GAME</span>
+        </button>
+      </footer>
+    </main>
+
+    <!-- Right Sidebar: Next Gem & Control Tips -->
+    <aside class="sidebar side-right">
+      <div class="glass-panel next-gem-panel">
+        <h3 class="panel-title"><span>✦</span> NEXT GEM <span>✦</span></h3>
+        <div class="next-gem-preview-box">
+          <canvas id="nextGemCanvas" width="90" height="90"></canvas>
+          <span class="next-gem-name" id="nextGemName">Ruby</span>
+        </div>
+      </div>
+
+      <div class="glass-panel controls-tip-panel">
+        <h4 class="panel-subtitle">HOW TO PLAY</h4>
+        <ul class="tip-list">
+          <li><span>🎯</span> <strong>Aim:</strong> Move mouse or finger left/right.</li>
+          <li><span>👇</span> <strong>Drop:</strong> Click, tap or press <kbd>Space</kbd>.</li>
+          <li><span>✨</span> <strong>Merge:</strong> Match same gems to evolve bigger ones!</li>
+          <li><span>⚠️</span> <strong>Warning:</strong> Don't let gems pile over the line.</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal-overlay" id="gameOverModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-crown">👑</div>
+        <h2>GAME OVER</h2>
+      </div>
+      <div class="modal-stats">
+        <div class="stat-item">
+          <span class="stat-label">FINAL SCORE</span>
+          <span class="stat-number score-highlight" id="modalFinalScore">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">BEST RECORD</span>
+          <span class="stat-number" id="modalBestScore">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">HIGHEST GEM CRAFTED</span>
+          <div class="highest-gem-display" id="modalHighestGem"></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="modalBtnRestart">
+          <span>PLAY AGAIN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- One Chance / Revive Modal (3 Seconds Countdown) -->
+  <div class="modal-overlay" id="oneChanceModal">
+    <div class="modal-card one-chance-card">
+      <div class="chance-lightning-icon">⚡</div>
+      <h2 class="chance-title">ONE CHANCE!</h2>
+      <p class="chance-subtitle">Tap below within <strong><span id="chanceCountdown">3</span>s</strong> to save your game and continue!</p>
+      
+      <!-- 3s Countdown Timer Circle & Bar -->
+      <div class="chance-timer-container">
+        <div class="chance-timer-circle" id="chanceTimerCircle">
+          <span class="chance-seconds-number" id="chanceSecondsNumber">3</span>
+        </div>
+        <div class="chance-progress-bar">
+          <div class="chance-progress-fill" id="chanceProgressFill"></div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-primary btn-chance-claim" id="btnClaimChance">
+          <span>⚡ USE 1 CHANCE NOW!</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Evolution Drawer Modal -->
+  <div class="modal-overlay" id="guideModal">
+    <div class="modal-card guide-modal-card">
+      <div class="modal-header">
+        <h3>✦ GEM EVOLUTION GUIDE ✦</h3>
+        <button class="btn-close" id="btnCloseGuide">✕</button>
+      </div>
+      <div class="evolution-chain-modal" id="modalEvolutionChain"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cake Sort 3D - Color Puzzle Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="game-app">
+    <!-- Clean Unified Top Bar: Spin, Level Title, Angry Strikes, Coins & Settings -->
+    <header class="clean-top-bar">
+      <!-- Left: Spin Wheel Button -->
+      <button id="btn-spin" class="top-spin-btn" title="Lucky Cake Spin!">
+        <div class="wheel-mini-icon">
+          <div class="wheel-spokes"></div>
+        </div>
+        <span class="spin-btn-text">SPIN 🎁</span>
+      </button>
+
+      <!-- Center: Prominent Active Level Name & Angry Strikes Counter -->
+      <div class="top-level-info" id="btn-select-level-hud" title="Click to Choose Level">
+        <div class="top-level-badge" id="hud-level-badge-tag">LEVEL 1</div>
+        <div class="top-level-title" id="hud-level-name-tag">🍰 Practice Bakery</div>
+        <div class="top-strikes-wrap" id="angry-strikes-pill" title="If 3 customers leave angry, you are OUT!">
+          <span class="strikes-label-mini">😡 Strikes:</span>
+          <div class="strikes-dots-wrap" id="strikes-dots-wrap">
+            <span class="strike-dot" id="strike-1">💢</span>
+            <span class="strike-dot" id="strike-2">💢</span>
+            <span class="strike-dot" id="strike-3">💢</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Compact Coins & Actions -->
+      <div class="top-right-group">
+        <div class="top-coin-pill">
+          <span>🪙</span>
+          <span id="coin-val">150</span>
+        </div>
+        <button id="btn-settings" class="top-mini-btn" title="Settings">⚙️</button>
+        <button id="btn-exit-game" class="top-mini-btn" title="Home Menu">🏠</button>
+      </div>
+
+      <!-- Hidden elements kept for script compatibility -->
+      <div class="hidden">
+        <span id="level-num-badge">1</span>
+        <span id="level-percent">%0</span>
+        <span id="goal-text">0/10</span>
+        <div id="goal-progress-fill"></div>
+        <canvas id="goal-cake-preview" width="34" height="34"></canvas>
+        <span id="score-val">0</span>
+        <div id="lives-status-pill"><span id="lives-mode-label"></span><div id="lives-hearts-wrap"></div></div>
+        <button id="btn-quick-choose-level"></button>
+        <button id="btn-no-ads"></button>
+      </div>
+    </header>
+
+    <!-- Bakery Customer Order Counter (Queue) -->
+    <section class="customer-counter-section" id="customer-counter-section">
+      <div class="bakery-canopy">
+        <div class="canopy-scallop"></div>
+        <div class="canopy-title" id="canopy-title-text">🍰 HUNGRY CUSTOMERS 🍰</div>
+      </div>
+      <div class="customers-queue-container" id="customers-queue-container">
+        <!-- Up to 3 active customers rendered dynamically with beautiful SVG avatars -->
+      </div>
+    </section>
+
+    <!-- Floating Boosters (Right side) -->
+    <div class="side-actions-right">
+      <div class="boosters-stack">
+        <button id="booster-hammer" class="booster-btn" title="Hammer: Smash a plate">
+          <span class="booster-icon">🔨</span>
+          <span class="booster-count" id="count-hammer">2</span>
+          <span class="booster-lock-overlay hidden" id="lock-hammer">🔒</span>
+        </button>
+        <button id="booster-swap" class="booster-btn" title="Swap: Refresh queue">
+          <span class="booster-icon">🔄</span>
+          <span class="booster-count" id="count-swap">3</span>
+          <span class="booster-lock-overlay hidden" id="lock-swap">🔒</span>
+        </button>
+        <button id="booster-hand" class="booster-btn" title="Magic Hand: Relocate a plate">
+          <span class="booster-icon">🖐️</span>
+          <span class="booster-count" id="count-hand">1</span>
+          <span class="booster-lock-overlay hidden" id="lock-hand">🔒</span>
+        </button>
+        <button id="booster-coffee" class="booster-btn booster-coffee-btn" title="Coffee Treat: Give +15s extra wait time to all customers! ☕">
+          <span class="booster-icon">☕</span>
+          <span class="booster-count" id="count-coffee">3</span>
+          <span class="booster-lock-overlay hidden" id="lock-coffee">🔒</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Game Area with 3D Lavender Table -->
+    <main class="game-stage">
+      <div class="table-3d-wrapper" id="table-wrapper">
+        <div class="table-surface" id="table-surface">
+          <!-- 4x4 Grid Slots (16 slots) -->
+          <div class="grid-container" id="grid-container">
+            <!-- 16 circular plate slots generated dynamically -->
+          </div>
+          <!-- Table 3D Rim and Legs -->
+          <div class="table-shadow"></div>
+          <div class="table-leg leg-left"></div>
+          <div class="table-leg leg-right"></div>
+        </div>
+      </div>
+
+      <!-- Flying Slices & Particle Canvas Layer -->
+      <canvas id="fx-canvas"></canvas>
+    </main>
+
+    <!-- Bottom Dock / Conveyor Shelf -->
+    <footer class="bottom-dock-container">
+      <div class="dock-shelf" id="dock-shelf">
+        <div class="dock-slot" data-dock-index="0" id="dock-0"></div>
+        <div class="dock-slot" data-dock-index="1" id="dock-1"></div>
+        <div class="dock-slot" data-dock-index="2" id="dock-2"></div>
+      </div>
+    </footer>
+
+    <!-- Booster In-Action Banner -->
+    <div id="booster-mode-banner" class="booster-banner hidden">
+      <span id="booster-mode-text">Select a plate on the table to smash!</span>
+      <button id="btn-cancel-booster" class="btn-cancel">✕ Cancel</button>
+    </div>
+
+    <!-- Modals & Overlays -->
+    <!-- Start / Main Menu Screen -->
+    <div id="start-menu-screen" class="start-menu-overlay">
+      <div class="start-menu-backdrop"></div>
+      <div class="start-menu-content">
+        <!-- Floating Bakery Elements -->
+        <div class="floating-cake cake-1">🧁</div>
+        <div class="floating-cake cake-2">🍰</div>
+        <div class="floating-cake cake-3">🎂</div>
+        <div class="floating-cake cake-4">🍩</div>
+        <div class="floating-cake cake-5">🍓</div>
+
+        <!-- Logo & Title -->
+        <div class="game-logo-wrapper">
+          <div class="logo-cake-hero">
+            <canvas id="menu-hero-cake" width="130" height="130"></canvas>
+            <div class="sparkle-ring"></div>
+          </div>
+          <h1 class="game-title">CAKE SORT <span class="title-3d">3D</span></h1>
+          <p class="game-tagline">✨ Match, Merge & Bake Delicious Cakes! ✨</p>
+        </div>
+
+        <!-- Player Stats Summary Card -->
+        <div class="menu-stats-card">
+          <div class="menu-stat-item">
+            <span class="stat-icon">🎯</span>
+            <div class="stat-details">
+              <span class="stat-label">LEVEL</span>
+              <span class="stat-value" id="menu-level-val">1</span>
+            </div>
+          </div>
+          <div class="menu-stat-divider"></div>
+          <div class="menu-stat-item">
+            <span class="stat-icon">🏆</span>
+            <div class="stat-details">
+              <span class="stat-label">SCORE</span>
+              <span class="stat-value" id="menu-score-val">0</span>
+            </div>
+          </div>
+          <div class="menu-stat-divider"></div>
+          <div class="menu-stat-item">
+            <span class="stat-icon">🪙</span>
+            <div class="stat-details">
+              <span class="stat-label">COINS</span>
+              <span class="stat-value" id="menu-coin-val">150</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="menu-actions">
+          <button id="btn-play-game" class="play-btn-pulse">
+            <span class="play-icon">▶</span>
+            <span class="play-text">PLAY NOW</span>
+          </button>
+
+          <button id="btn-menu-choose-level" class="menu-choose-level-btn">
+            <span class="menu-level-icon">🎯</span>
+            <span class="menu-level-text">CHOOSE LEVEL (1 - 12)</span>
+            <span class="menu-level-sub">Higher = Easier & Fun!</span>
+          </button>
+
+          <div class="menu-secondary-row">
+            <button id="btn-menu-spin" class="menu-sub-btn">
+              <span class="sub-icon">🎡</span>
+              <span class="sub-text">Spin Wheel</span>
+            </button>
+            <button id="btn-menu-how" class="menu-sub-btn">
+              <span class="sub-icon">❓</span>
+              <span class="sub-text">How to Play</span>
+            </button>
+            <button id="btn-menu-settings" class="menu-sub-btn">
+              <span class="sub-icon">⚙️</span>
+              <span class="sub-text">Settings</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Select Modal -->
+    <div id="modal-level-select" class="modal-backdrop hidden">
+      <div class="modal-card level-select-modal-card">
+        <button class="modal-close-btn" id="close-level-modal">✕</button>
+        <div class="level-modal-header">
+          <h2 class="modal-title">🍰 Select Any Level 🍰</h2>
+          <p class="modal-subtitle">Choose your challenge! Higher levels are easier & loaded with huge combos!</p>
+          <div class="level-rules-pill">
+            <span class="rule-tag rule-safe">🛡️ Level 1: Practice (No Out)</span>
+            <span class="rule-tag rule-out">💀 Level 2+: Out System (3+ Lives)</span>
+            <span class="rule-tag rule-easy">✨ Higher = Easier</span>
+          </div>
+        </div>
+
+        <!-- Level Grid Container -->
+        <div class="level-select-grid" id="level-select-grid">
+          <!-- Populated dynamically by game.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Exit to Menu Modal -->
+    <div id="modal-confirm-exit" class="modal-backdrop hidden">
+      <div class="modal-card exit-modal-card">
+        <div class="exit-modal-icon">🚪</div>
+        <h2 class="modal-title">Exit to Main Menu?</h2>
+        <p class="modal-subtitle">Your level progress & score are automatically saved!</p>
+
+        <div class="modal-buttons">
+          <button id="btn-confirm-exit" class="action-btn exit-confirm-btn">🚪 Yes, Exit to Menu</button>
+          <button id="btn-cancel-exit" class="btn-secondary">▶ Resume Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spin Wheel Modal -->
+    <div id="modal-spin" class="modal-backdrop hidden">
+      <div class="modal-card spin-modal-card">
+        <button class="modal-close-btn" id="close-spin-modal">✕</button>
+        <h2 class="modal-title">🌟 Lucky Cake Wheel 🌟</h2>
+        <p class="modal-subtitle">Spin to win free boosters & gold coins!</p>
+
+        <div class="wheel-stage">
+          <div class="wheel-pointer">▼</div>
+          <canvas id="spin-canvas" width="280" height="280"></canvas>
+        </div>
+
+        <button id="btn-do-spin" class="action-btn spin-action-btn">SPIN NOW!</button>
+        <div id="spin-reward-banner" class="reward-banner hidden"></div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="modal-settings" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <button class="modal-close-btn" id="close-settings-modal">✕</button>
+        <h2 class="modal-title">Settings</h2>
+
+        <div class="setting-row">
+          <span>🔊 Sound Effects</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-sfx" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <span>🎵 Pleasant Chimes</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-music" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <span>📳 Haptic Effects</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-haptic" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="modal-buttons">
+          <button id="btn-settings-choose-level" class="btn-secondary btn-level-highlight">🎯 Choose Level</button>
+          <button id="btn-restart-level" class="btn-secondary">🔄 Restart Level</button>
+          <button id="btn-how-to-play" class="btn-secondary">❓ How to Play</button>
+          <button id="btn-settings-exit" class="btn-secondary btn-exit-highlight">🚪 Exit to Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- How To Play Modal -->
+    <div id="modal-how" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <button class="modal-close-btn" id="close-how-modal">✕</button>
+        <h2 class="modal-title">How To Play 🍰</h2>
+        <div class="how-to-content">
+          <div class="how-step">
+            <span class="how-step-num">1</span>
+            <p><strong>Place Plates:</strong> Tap plates from the dock onto empty table slots to sort & match cakes.</p>
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">2</span>
+            <p><strong>Serve Hungry Customers:</strong> Customers line up above asking for specific cakes with a patience timer bar!</p>
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">3</span>
+            <p><strong>⚠️ Don't Be Late:</strong> If a customer's patience runs out, they get angry 😡 and leave! If <strong>3 customers leave angry</strong>, you are <strong>OUT!</strong></p>
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">4</span>
+            <p><strong>Earn Big Rewards:</strong> Complete full 6-slice cakes to serve customers for huge coins 🪙, combo points, and star ratings!</p>
+          </div>
+        </div>
+        <button id="btn-got-it" class="action-btn">Got It! Let's Bake 🍰</button>
+      </div>
+    </div>
+
+    <!-- Level Complete Celebration Modal -->
+    <div id="modal-level-win" class="modal-backdrop hidden">
+      <div class="modal-card win-card">
+        <div class="win-trophy-anim">🏆✨</div>
+        <h2 class="win-title">LEVEL COMPLETE!</h2>
+        <p class="win-level-sub" id="win-level-label">Level 1 Mastered</p>
+
+        <div class="win-rewards">
+          <div class="reward-pill">🪙 +50 Coins</div>
+          <div class="reward-pill">⭐ +100 Score</div>
+        </div>
+
+        <button id="btn-next-level" class="action-btn win-btn">NEXT LEVEL ➔</button>
+        <button id="btn-win-choose-level" class="btn-secondary" style="margin-top: 8px;">🎯 Choose Level</button>
+        <button id="btn-win-exit" class="btn-secondary" style="margin-top: 6px;">🏠 Main Menu</button>
+      </div>
+    </div>
+
+    <!-- Game Over / Out System Modal -->
+    <div id="modal-game-over" class="modal-backdrop hidden">
+      <div class="modal-card game-over-card">
+        <div class="game-over-icon" id="gameover-icon">😡💔</div>
+        <h2 class="game-over-title" id="gameover-title">YOU ARE OUT!</h2>
+        <p class="game-over-sub" id="gameover-desc">3 Customers got angry and left the bakery!</p>
+
+        <div class="out-level-info" id="gameover-out-info">
+          <span class="out-badge angry-badge">😡 3 / 3 Angry Customers Left</span>
+        </div>
+
+        <div class="game-over-options">
+          <button id="btn-use-hammer-revive" class="action-btn booster-revive-btn">
+            💖 Revive Bakery & Pacify Customers (Free)
+          </button>
+          <button id="btn-retry-level" class="btn-secondary">
+            🔄 Try Again
+          </button>
+          <button id="btn-gameover-choose-level" class="btn-secondary btn-level-highlight">
+            🎯 Choose Other Level
+          </button>
+          <button id="btn-gameover-exit" class="btn-secondary">
+            🏠 Main Menu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Toast / Notification -->
+    <div id="toast-message" class="toast-popup hidden"></div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+
+</html>

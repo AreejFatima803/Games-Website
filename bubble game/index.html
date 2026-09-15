@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="A premium, visually stunning bubble popping game with Arcade and Zen modes, neon aesthetics, particle physics, and sound synthesis.">
+    <title>Bubble Pop Neon - Premium Arcade Game</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app-container">
+        <!-- Floating background shapes -->
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+
+        <!-- MAIN MENU -->
+        <div id="main-menu" class="screen active">
+            <div class="menu-content glass-panel">
+                <div class="logo-container">
+                    <h1 class="logo-text">BUBBLE<span>POP</span></h1>
+                </div>
+
+                <div class="menu-image-container">
+                    <img src="menu_preview.jpg" alt="Bubble Pop Game" class="menu-game-cover">
+                </div>
+
+                <div class="menu-buttons">
+                    <button id="btn-play" class="btn btn-primary btn-glow btn-play-large">
+                        <span class="btn-icon">▶</span> PLAY GAME
+                    </button>
+                    <button id="btn-sound" class="btn btn-icon-only" aria-label="Toggle Sound">
+                        <span id="sound-icon">🔊</span> Sound On
+                    </button>
+                </div>
+
+                <div class="high-score-board">
+                    <div class="score-row">
+                        <span>🏆 Best Score:</span>
+                        <strong id="high-score-arcade">0</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME PLAY SCREEN -->
+        <div id="game-screen" class="screen">
+            <!-- Top HUD Bar with Level, Score, Bubbles Count, Pause & Exit -->
+            <div class="game-hud-bar glass-panel">
+                <div class="hud-item hud-level">
+                    <span class="hud-icon">⭐</span>
+                    <span class="hud-label">LVL</span>
+                    <strong id="current-level">1</strong>
+                </div>
+                <div class="hud-item hud-score">
+                    <span class="hud-label">SCORE</span>
+                    <strong id="current-score">0</strong>
+                </div>
+                <div class="hud-item hud-bubbles">
+                    <span class="hud-label">LEFT</span>
+                    <strong id="remaining-bubbles">0</strong>
+                </div>
+                <div class="hud-actions">
+                    <button id="btn-pause" class="btn-hud-action" aria-label="Pause" title="Pause Game">⏸</button>
+                    <button id="btn-exit" class="btn-hud-action btn-hud-exit" aria-label="Exit Game" title="Exit to Menu">✕</button>
+                </div>
+            </div>
+
+            <!-- Game canvas for bubbles and particles -->
+            <div id="canvas-container">
+                <canvas id="game-canvas"></canvas>
+            </div>
+
+            <!-- In-game pop-up messages (Combo alert, Special power alerts) -->
+            <div id="game-alert-container"></div>
+
+            <!-- Bottom Power-ups Bar (Bomb 💣 and Fire 🔥) -->
+            <div class="powerups-bar">
+                <button id="btn-power-bomb" class="btn-powerup" title="Bomb Bubble: Destroys 6 Bubbles!">
+                    <span class="powerup-icon">💣</span>
+                    <span class="powerup-badge" id="bomb-count">2</span>
+                </button>
+                <button id="btn-power-fire" class="btn-powerup" title="Fire Bubble: Burns 12 Bubbles!">
+                    <span class="powerup-icon">🔥</span>
+                    <span class="powerup-badge" id="fire-count">1</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PAUSE SCREEN OVERLAY -->
+        <div id="pause-screen" class="screen-overlay">
+            <div class="overlay-content glass-panel">
+                <h2>Game Paused</h2>
+                <div class="overlay-buttons">
+                    <button id="btn-resume" class="btn btn-primary">▶ Resume</button>
+                    <button id="btn-restart-pause" class="btn btn-secondary">🔄 Restart</button>
+                    <button id="btn-menu-pause" class="btn btn-danger">🏠 Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WIN / LEVEL COMPLETE SCREEN OVERLAY -->
+        <div id="win-screen" class="screen-overlay">
+            <div class="overlay-content glass-panel">
+                <div class="win-trophy">🏆</div>
+                <h2 id="win-title">Level Completed!</h2>
+                <div class="stars-container">
+                    <span class="star active" id="star-1">⭐</span>
+                    <span class="star active" id="star-2">⭐</span>
+                    <span class="star active" id="star-3">⭐</span>
+                </div>
+                <p id="win-subtitle">Awesome! All bubbles cleared.</p>
+
+                <div class="final-score-box">
+                    <div class="score-stat-row">
+                        <span class="label">Level Cleared:</span>
+                        <strong id="win-level-num">1</strong>
+                    </div>
+                    <div class="score-stat-row">
+                        <span class="label">Total Score:</span>
+                        <h2 id="win-total-score">0</h2>
+                    </div>
+                    <div id="win-high-score-badge" class="hidden">🎉 NEW HIGH SCORE!</div>
+                </div>
+
+                <div class="overlay-buttons">
+                    <button id="btn-next-level" class="btn btn-primary btn-glow">▶ Next Level</button>
+                    <button id="btn-restart-win" class="btn btn-secondary">🔄 Replay Level</button>
+                    <button id="btn-menu-win" class="btn btn-danger">🏠 Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME OVER SCREEN OVERLAY -->
+        <div id="game-over-screen" class="screen-overlay">
+            <div class="overlay-content glass-panel">
+                <div class="game-over-icon">💀</div>
+                <h2 id="game-over-title">Game Over</h2>
+                <p id="game-over-reason">Bubbles reached the deadline!</p>
+
+                <div class="final-score-box">
+                    <div class="score-stat-row">
+                        <span class="label">Level Reached:</span>
+                        <strong id="over-level-reached">1</strong>
+                    </div>
+                    <div class="score-stat-row">
+                        <span class="label">Final Score:</span>
+                        <h2 id="final-score-val">0</h2>
+                    </div>
+                    <div id="new-high-score-badge" class="hidden">🎉 NEW HIGH SCORE!</div>
+                </div>
+
+                <div class="overlay-buttons">
+                    <button id="btn-restart-over" class="btn btn-primary btn-glow">🔄 Play Again</button>
+                    <button id="btn-menu-over" class="btn btn-secondary">🏠 Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

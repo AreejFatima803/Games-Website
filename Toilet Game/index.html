@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Barbara & Kent: Toilet Rush</title>
+    <!-- Google Fonts for Cartoon Fun Style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Titan+One&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Ambient Game Background -->
+    <div class="game-wrapper">
+        <!-- Top HUD Header -->
+        <header class="game-header">
+            <div class="header-left">
+                <button id="btn-home" class="icon-btn" title="Home Menu">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </button>
+                <button id="btn-levels" class="icon-btn" title="Level Select">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor"
+                            d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="level-indicator-badge">
+                <span class="level-text">LEVEL <span id="current-level-num">1</span></span>
+            </div>
+
+            <div class="header-right">
+                <button id="btn-sound" class="icon-btn" title="Toggle Sound">
+                    <span id="sound-icon">🔊</span>
+                </button>
+                <button id="btn-hint" class="icon-btn hint-btn" title="Get Hint">
+                    <span>💡</span>
+                    <span class="hint-badge" id="hint-count">3</span>
+                </button>
+                <button id="btn-restart" class="icon-btn" title="Restart Level">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor"
+                            d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Canvas Container -->
+        <div class="canvas-container" id="canvas-container">
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- Draw Guidance Indicator -->
+            <div id="draw-instruction" class="draw-instruction">
+                <span class="instruction-icon">✏️</span>
+                <span id="instruction-text">Draw lines to the toilet doors! Avoid crashes!</span>
+            </div>
+
+            <!-- Action Floating Bar (when paths ready) -->
+            <div id="action-bar" class="action-bar hidden">
+                <button id="btn-go" class="go-btn pulse-anim">
+                    <span>GO! 🏃💨</span>
+                </button>
+                <button id="btn-clear-lines" class="clear-btn" title="Clear Drawn Lines">
+                    <span>🗑️ Erase</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN MENU OVERLAY -->
+        <div id="modal-main-menu" class="modal-overlay active">
+            <div class="menu-card pop-anim">
+                <!-- Title Banner matching user image -->
+                <div class="menu-banner">
+                    <div class="title-container">
+                        <h1 class="title-barbara">Barbara</h1>
+                        <span class="title-amp">&amp;</span>
+                        <h1 class="title-kent">Kent</h1>
+                    </div>
+                    <div class="subtitle-badge">TOILET RUSH 🚽</div>
+                </div>
+
+                <!-- Cover Illustration -->
+                <div class="cover-art-container">
+                    <div class="door-preview door-blue">
+                        <span class="door-sign">🚹</span>
+                        <div class="door-splashes"></div>
+                    </div>
+                    <div class="door-preview door-pink">
+                        <span class="door-sign">🚺</span>
+                    </div>
+
+                    <div class="character-preview-kent">
+                        <div class="char-avatar kent-avatar"></div>
+                        <div class="sweat-drop">💦</div>
+                    </div>
+                    <div class="character-preview-barbara">
+                        <div class="char-avatar barbara-avatar"></div>
+                        <div class="sweat-drop">💦</div>
+                    </div>
+
+                    <!-- Animated connecting pee line -->
+                    <svg class="line-deco" viewBox="0 0 200 80">
+                        <path d="M 10 40 Q 60 70, 110 30 T 180 50" fill="none" stroke="#29c5e6" stroke-width="6"
+                            stroke-linecap="round" stroke-dasharray="8 4" />
+                    </svg>
+                </div>
+
+                <!-- Play Button matching the green pill in screenshot -->
+                <div class="menu-actions">
+                    <button id="btn-main-play" class="big-green-play-btn" title="Play Game">
+                        <div class="play-triangle"></div>
+                    </button>
+
+                    <div class="menu-sub-actions">
+                        <button id="btn-menu-levels" class="menu-secondary-btn">
+                            <span>🗺️ Select Level</span>
+                        </button>
+                        <button id="btn-menu-how" class="menu-secondary-btn">
+                            <span>❓ How to Play</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL SELECT MODAL -->
+        <div id="modal-level-select" class="modal-overlay">
+            <div class="modal-card bounce-in">
+                <div class="modal-header">
+                    <h2>Select Level</h2>
+                    <button class="modal-close-btn" id="btn-close-levels">✖</button>
+                </div>
+                <div class="level-grid" id="level-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- HOW TO PLAY MODAL -->
+        <div id="modal-how-to-play" class="modal-overlay">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h2>How To Play</h2>
+                    <button class="modal-close-btn" id="btn-close-how">✖</button>
+                </div>
+                <div class="tutorial-content">
+                    <div class="tutorial-step">
+                        <div class="step-icon">1️⃣ 👦 ➡️ 🚹</div>
+                        <p>Click &amp; drag from <strong>Kent</strong> to the <strong>Blue Door</strong>.</p>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-icon">2️⃣ 👧 ➡️ 🚺</div>
+                        <p>Click &amp; drag from <strong>Barbara</strong> to the <strong>Pink Door</strong>.</p>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-icon">3️⃣ 💥 🚫</div>
+                        <p><strong>DON'T CRASH!</strong> Plan curve paths so they don't collide when running!</p>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-icon">4️⃣ 🔑 🐶 ⚠️</div>
+                        <p>Collect keys to unlock doors and steer clear of dogs and obstacles!</p>
+                    </div>
+                </div>
+                <button id="btn-tutorial-gotit" class="action-dialog-btn btn-success">Got It! Let's Rush!</button>
+            </div>
+        </div>
+
+        <!-- WIN MODAL -->
+        <div id="modal-win" class="modal-overlay">
+            <div class="modal-card win-card pop-anim">
+                <div class="win-sparkles">✨ 🎉 ✨</div>
+                <h2 class="win-title">SWEET RELIEF! 🚽</h2>
+                <div class="stars-rating" id="win-stars">
+                    <span class="star filled">⭐</span>
+                    <span class="star filled">⭐</span>
+                    <span class="star filled">⭐</span>
+                </div>
+                <p class="win-dialogue" id="win-quote">"Ahhhhh! Just in time!"</p>
+
+                <div class="modal-buttons">
+                    <button id="btn-win-replay" class="action-dialog-btn btn-secondary">
+                        <span>🔄 Replay</span>
+                    </button>
+                    <button id="btn-win-next" class="action-dialog-btn btn-primary pulse-anim">
+                        <span>Next Level ⏩</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAIL MODAL -->
+        <div id="modal-fail" class="modal-overlay">
+            <div class="modal-card fail-card shake-anim">
+                <div class="fail-emoji" id="fail-emoji">💥 😖 💥</div>
+                <h2 class="fail-title" id="fail-title">OUCH! THEY CRASHED!</h2>
+                <p class="fail-desc" id="fail-desc">Kent &amp; Barbara bumped into each other. Try drawing a longer
+                    curve to delay one character!</p>
+
+                <div class="modal-buttons">
+                    <button id="btn-fail-hint" class="action-dialog-btn btn-hint">
+                        <span>💡 Show Hint</span>
+                    </button>
+                    <button id="btn-fail-retry" class="action-dialog-btn btn-primary">
+                        <span>🔄 Try Again</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

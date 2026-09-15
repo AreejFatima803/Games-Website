@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+
+    <!-- Radial Glow -->
+    <radialGradient id="centerGlow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0284c7" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Letter Tile Gradients -->
+    <linearGradient id="tileOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="tileCyan" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="tileGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="tilePurple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#9333ea"/>
+    </linearGradient>
+    <linearGradient id="tileYellow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <linearGradient id="tileRed" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f87171"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+
+    <!-- Glass/Card Gradients -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#e2e8f0" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <linearGradient id="pillGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+
+    <!-- Filters for 3D Drop Shadows & Glows -->
+    <filter id="tileShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="4" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="heavyShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="450" fill="url(#bgGrad)" />
+  <rect width="600" height="450" fill="url(#centerGlow)" />
+
+  <!-- Background Grid of Faded Floating Letters -->
+  <g opacity="0.15" font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#ffffff" text-anchor="middle">
+    <text x="50" y="60">A</text><text x="110" y="60">B</text><text x="170" y="60">C</text><text x="230" y="60">D</text><text x="290" y="60">E</text><text x="350" y="60">F</text><text x="410" y="60">G</text><text x="470" y="60">H</text><text x="530" y="60">I</text>
+    <text x="50" y="110">J</text><text x="110" y="110">K</text><text x="170" y="110">L</text><text x="230" y="110">M</text><text x="290" y="110">N</text><text x="350" y="110">O</text><text x="410" y="110">P</text><text x="470" y="110">Q</text><text x="530" y="110">R</text>
+    <text x="50" y="160">S</text><text x="110" y="160">T</text><text x="170" y="160">U</text><text x="230" y="160">V</text><text x="290" y="160">W</text><text x="350" y="160">X</text><text x="410" y="160">Y</text><text x="470" y="160">Z</text><text x="530" y="160">A</text>
+    <text x="50" y="380">P</text><text x="110" y="380">L</text><text x="170" y="380">A</text><text x="230" y="380">Y</text><text x="290" y="380">F</text><text x="350" y="380">U</text><text x="410" y="380">N</text><text x="470" y="380">W</text><text x="530" y="380">S</text>
+    <text x="50" y="430">B</text><text x="110" y="430">O</text><text x="170" y="430">A</text><text x="230" y="430">R</text><text x="290" y="430">D</text><text x="350" y="430">C</text><text x="410" y="430">E</text><text x="470" y="430">L</text><text x="530" y="430">L</text>
+  </g>
+
+  <!-- Sparkles & Ambient Accents -->
+  <g fill="#fef08a" opacity="0.8">
+    <path d="M90 70 Q90 85 75 85 Q90 85 90 100 Q90 85 105 85 Q90 85 90 70 Z" filter="url(#neonGlow)"/>
+    <path d="M510 80 Q510 95 495 95 Q510 95 510 110 Q510 95 525 95 Q510 95 510 80 Z" filter="url(#neonGlow)"/>
+    <path d="M80 340 Q80 352 68 352 Q80 352 80 364 Q80 352 92 352 Q80 352 80 340 Z"/>
+    <path d="M520 330 Q520 342 508 342 Q520 342 520 354 Q520 342 532 342 Q520 342 520 330 Z"/>
+  </g>
+
+  <!-- Central Word Board Card Panel -->
+  <g filter="url(#heavyShadow)">
+    <rect x="70" y="55" width="460" height="235" rx="24" fill="url(#cardGrad)" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Header inside card -->
+    <text x="300" y="98" font-family="'Outfit', 'Segoe UI', sans-serif" font-weight="900" font-size="28" fill="#1e293b" text-anchor="middle" letter-spacing="4">
+      WORD SEARCH
+    </text>
+    <rect x="230" y="108" width="140" height="4" rx="2" fill="url(#tileOrange)" />
+
+    <!-- Matrix Mini Grid -->
+    <!-- Row 1 -->
+    <g font-family="'Outfit', 'Arial Black', sans-serif" font-weight="800" font-size="19" text-anchor="middle" fill="#64748b">
+      <text x="110" y="145">P</text><text x="150" y="145">U</text><text x="190" y="145">Z</text><text x="230" y="145">Z</text><text x="270" y="145">L</text><text x="310" y="145">E</text><text x="350" y="145">M</text><text x="390" y="145">A</text><text x="430" y="145">S</text><text x="470" y="145">T</text>
+    </g>
+
+    <!-- Word Highlighter Pill (SEARCH) -->
+    <rect x="135" y="162" width="285" height="34" rx="17" fill="#06b6d4" opacity="0.95" filter="url(#tileShadow)"/>
+    <g font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="20" text-anchor="middle" fill="#ffffff">
+      <text x="110" y="186" fill="#64748b">G</text>
+      <text x="155" y="186">S</text>
+      <text x="195" y="186">E</text>
+      <text x="235" y="186">A</text>
+      <text x="275" y="186">R</text>
+      <text x="315" y="186">C</text>
+      <text x="355" y="186">H</text>
+      <text x="395" y="186">!</text>
+      <text x="430" y="186" fill="#64748b">Q</text>
+      <text x="470" y="186" fill="#64748b">K</text>
+    </g>
+
+    <!-- Row 3 with Orange Pill (CLASSIC) -->
+    <rect x="175" y="208" width="290" height="34" rx="17" fill="url(#pillGrad)" opacity="0.95" filter="url(#tileShadow)"/>
+    <g font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="20" text-anchor="middle" fill="#ffffff">
+      <text x="110" y="232" fill="#64748b">B</text>
+      <text x="150" y="232" fill="#64748b">W</text>
+      <text x="195" y="232">C</text>
+      <text x="235" y="232">L</text>
+      <text x="275" y="232">A</text>
+      <text x="315" y="232">S</text>
+      <text x="355" y="232">S</text>
+      <text x="395" y="232">I</text>
+      <text x="435" y="232">C</text>
+      <text x="470" y="232" fill="#64748b">X</text>
+    </g>
+
+    <!-- Row 4 -->
+    <g font-family="'Outfit', 'Arial Black', sans-serif" font-weight="800" font-size="19" text-anchor="middle" fill="#64748b">
+      <text x="110" y="272">F</text><text x="150" y="272">I</text><text x="190" y="272">N</text><text x="230" y="272">D</text><text x="270" y="272">W</text><text x="310" y="272">O</text><text x="350" y="272">R</text><text x="390" y="272">D</text><text x="430" y="272">S</text><text x="470" y="272">Z</text>
+    </g>
+  </g>
+
+  <!-- Big 3D Letter Blocks in Front: W - O - R - D - S -->
+  <!-- Block W -->
+  <g transform="translate(65, 310) rotate(-6)" filter="url(#tileShadow)">
+    <rect width="84" height="84" rx="18" fill="url(#tileCyan)" stroke="#ffffff" stroke-width="3.5"/>
+    <rect x="6" y="6" width="72" height="24" rx="10" fill="#ffffff" opacity="0.3"/>
+    <text x="42" y="58" font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="46" fill="#ffffff" text-anchor="middle">W</text>
+  </g>
+
+  <!-- Block O -->
+  <g transform="translate(165, 305) rotate(-2)" filter="url(#tileShadow)">
+    <rect width="84" height="84" rx="18" fill="url(#tileGreen)" stroke="#ffffff" stroke-width="3.5"/>
+    <rect x="6" y="6" width="72" height="24" rx="10" fill="#ffffff" opacity="0.3"/>
+    <text x="42" y="58" font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="46" fill="#ffffff" text-anchor="middle">O</text>
+  </g>
+
+  <!-- Block R -->
+  <g transform="translate(265, 302)" filter="url(#tileShadow)">
+    <rect width="84" height="84" rx="18" fill="url(#tileOrange)" stroke="#ffffff" stroke-width="3.5"/>
+    <rect x="6" y="6" width="72" height="24" rx="10" fill="#ffffff" opacity="0.3"/>
+    <text x="42" y="58" font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="46" fill="#ffffff" text-anchor="middle">R</text>
+  </g>
+
+  <!-- Block D -->
+  <g transform="translate(365, 305) rotate(3)" filter="url(#tileShadow)">
+    <rect width="84" height="84" rx="18" fill="url(#tilePurple)" stroke="#ffffff" stroke-width="3.5"/>
+    <rect x="6" y="6" width="72" height="24" rx="10" fill="#ffffff" opacity="0.3"/>
+    <text x="42" y="58" font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="46" fill="#ffffff" text-anchor="middle">D</text>
+  </g>
+
+  <!-- Block S -->
+  <g transform="translate(465, 312) rotate(7)" filter="url(#tileShadow)">
+    <rect width="84" height="84" rx="18" fill="url(#tileYellow)" stroke="#ffffff" stroke-width="3.5"/>
+    <rect x="6" y="6" width="72" height="24" rx="10" fill="#ffffff" opacity="0.3"/>
+    <text x="42" y="58" font-family="'Outfit', 'Arial Black', sans-serif" font-weight="900" font-size="46" fill="#713f12" text-anchor="middle">S</text>
+  </g>
+
+  <!-- Floating Star Badge -->
+  <g transform="translate(490, 40) rotate(12)" filter="url(#tileShadow)">
+    <circle cx="28" cy="28" r="26" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+    <polygon points="28,10 33,22 46,23 36,32 39,45 28,38 17,45 20,32 10,23 23,22" fill="#ffffff"/>
+  </g>
+</svg>

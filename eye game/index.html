@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Eye Pin Hit Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-wrapper">
+    <!-- Game Container -->
+    <div class="game-container" id="gameContainer">
+      <!-- Background Silhouettes (Matching Reference Art) -->
+      <div class="silhouette-bg top-silhouette"></div>
+      <div class="silhouette-bg bottom-silhouette"></div>
+
+      <!-- Top HUD Header -->
+      <header class="hud-top">
+        <div class="hud-avatar-box left-avatar">
+          <div class="pixel-avatar avatar-1"></div>
+        </div>
+
+        <div class="hud-middle">
+          <!-- Level Progress Stripes -->
+          <div class="stripe-bar" id="stripeBar"></div>
+          
+          <!-- Stage Dots -->
+          <div class="stage-dots" id="stageDots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+
+          <!-- Level Name -->
+          <div class="level-title" id="levelTitle">EYE</div>
+        </div>
+
+        <div class="hud-avatar-box right-avatar">
+          <div class="pixel-avatar avatar-2"></div>
+        </div>
+      </header>
+
+      <!-- Quick Audio, Score & Chances Bar -->
+      <div class="hud-sub">
+        <div class="score-display">SCORE: <span id="scoreVal">0</span></div>
+        <div class="chances-display" id="chancesDisplay" title="Chances Remaining">
+          <span class="chances-label">LIVES:</span>
+          <span class="hearts-box" id="heartsBox">
+            <span class="heart active">❤️</span>
+            <span class="heart active">❤️</span>
+            <span class="heart active">❤️</span>
+          </span>
+        </div>
+        <div class="hud-controls">
+          <button id="autoBottleBtn" class="auto-bottle-btn" title="Auto Inject Bottle: Click to automatically add 1 bottle into the eye safely! (Press A)">
+            <span class="auto-btn-icon">🪄</span>
+            <span class="auto-btn-text">AUTO</span>
+          </button>
+          <button id="soundToggleBtn" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+        </div>
+      </div>
+
+      <!-- Main Canvas for Eye & Pins -->
+      <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+      <!-- Remaining Pins Side Stack (Matching Screenshot bottom-left orange pins) -->
+      <div class="pin-stack" id="pinStack"></div>
+
+      <!-- Floating Action Button for Auto Bottle Injection -->
+      <button id="floatingAutoBtn" class="floating-auto-bottle" title="Auto Inject 1 Bottle into Eye (Press A)">
+        <span class="fab-icon">🪄⚡</span>
+        <span class="fab-label">+1 AUTO BOTTLE</span>
+      </button>
+
+      <!-- Instruction / Tap Area Indicator -->
+      <div class="tap-hint" id="tapHint">TAP OR PRESS SPACE TO SHOOT</div>
+
+      <!-- UI Overlays -->
+
+      <!-- Start Screen Modal -->
+      <div class="modal overlay-screen active" id="startScreen">
+        <div class="modal-content glass-card animate-pop">
+          <div class="modal-badge">ARCADE PIN HIT</div>
+          <h1 class="modal-title glow-text">EYE PIN</h1>
+          <p class="modal-desc">
+            Eyeball par eye-drop pins shoot karein.<br>
+            Aap ke paas <strong style="color:#ef4444;">3 Chances (❤️❤️❤️)</strong> hain!
+          </p>
+          <div class="instructions-pill">
+            <span>🎯 Tap / Click / Spacebar to shoot</span>
+          </div>
+          <button id="startBtn" class="action-btn glow-btn">START GAME</button>
+        </div>
+      </div>
+
+      <!-- Game Over (Out) Screen -->
+      <div class="modal overlay-screen" id="gameOverScreen">
+        <div class="modal-content glass-card game-over-card animate-pop">
+          <div class="game-over-tag">💥 OUT!</div>
+          <h1 class="modal-title text-danger">GAME OUT!</h1>
+          <p class="modal-desc" id="gameOverReason">3 chances khatam ho gaye!</p>
+          
+          <div class="stats-row">
+            <div class="stat-box">
+              <span class="stat-lbl">SCORE</span>
+              <span class="stat-num" id="finalScore">0</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-lbl">BEST</span>
+              <span class="stat-num" id="highScore">0</span>
+            </div>
+            <div class="stat-box stat-highlight">
+              <span class="stat-lbl">STAGE</span>
+              <span class="stat-num text-cyan" id="finalStage">1</span>
+            </div>
+          </div>
+
+          <div class="retry-hint-box">
+            <span>🔄 Retry karein — Aapko dobara 3 Chances (❤️❤️❤️) milengi</span>
+          </div>
+
+          <div class="game-over-actions">
+            <button id="restartBtn" class="action-btn glow-btn retry-btn">
+              <span class="btn-text">RETRY LEVEL ↺</span>
+            </button>
+            <button id="startOverBtn" class="action-btn secondary-btn" style="margin-top: 8px; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); font-size: 11px; padding: 8px 16px;">
+              <span>🏠 START OVER (LEVEL 1)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage Cleared Screen -->
+      <div class="modal overlay-screen" id="levelClearedScreen">
+        <div class="modal-content glass-card victory-card animate-pop">
+          <div class="modal-badge victory-badge">LEVEL COMPLETE!</div>
+          <h1 class="modal-title text-success">PERFECT!</h1>
+          <p class="modal-desc">Eyeball safely medicated!</p>
+          
+          <div class="stats-row">
+            <div class="stat-box">
+              <span class="stat-lbl">STAGE</span>
+              <span class="stat-num" id="clearedStageNum">1</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-lbl">BONUS</span>
+              <span class="stat-num text-gold">+500</span>
+            </div>
+          </div>
+
+          <button id="nextLevelBtn" class="action-btn glow-btn next-btn">NEXT STAGE ➔</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
