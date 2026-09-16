@@ -1,5 +1,22 @@
 RewriteEngine On
 
+# Prevent Caching - Force browsers and CDNs to load latest changes immediately
+<IfModule mod_headers.c>
+    # Disable cache for HTML pages
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # Disable cache for CSS, JS, SVG, and media assets
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|json)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
 # Remove index.html from URL
 RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
 RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
